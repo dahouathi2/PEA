@@ -5,7 +5,7 @@ llama_layers=32
 
 master_port=00098
 num_process=1
-batch_size=6
+batch_size=1
 d_model=32
 d_ff=128
 
@@ -15,11 +15,11 @@ accelerate launch --mixed_precision bf16 --num_processes $num_process --main_pro
   --task_name long_term_forecast \
   --is_training 1 \
   --root_path ./dataset \
-  --data_path data.csv \
-  --model_id EAN_512_96 \
+  --data_path combined_dataframes.csv \
+  --model_id combined \
   --model $model_name \
   --data ean \
-  --features M \
+  --features S \
   --target sold_units \
   --seq_len 13 \
   --label_len 1 \
