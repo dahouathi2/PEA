@@ -13,33 +13,17 @@ import vertexai
 from utils.tools import del_files, EarlyStopping, adjust_learning_rate, vali, load_content
 
 
-from accelerate import Accelerator, DeepSpeedPlugin
-from accelerate import DistributedDataParallelKwargs
 from torch import optim
 from torch.optim import lr_scheduler
 from tqdm import tqdm
 
-from models import Autoformer, DLinear, TimeLLM
 
-from data_provider.data_factory import data_provider
 import time
-import random
 import numpy as np
 import os
 
-os.environ['CURL_CA_BUNDLE'] = ''
-os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:64"
-
-from utils.tools import del_files, EarlyStopping, adjust_learning_rate, vali, load_content
-
-
-fix_seed = 2021
-random.seed(fix_seed)
-torch.manual_seed(fix_seed)
-np.random.seed(fix_seed)
-
-
-transformers.logging.set_verbosity_error()
+from accelerate import Accelerator, DeepSpeedPlugin
+from accelerate import DistributedDataParallelKwargs
 
 
 class FlattenHead(nn.Module):
@@ -287,7 +271,12 @@ class Model(nn.Module,VertexModel):
         return dec_out
 
     @vertexai.preview.developer.mark.train()
-    def train_model(self, train_loader, val_loader, test_loader, accelerator, path):
+    def train_model(self, train_loader, val_loader, test_loader, path):
+        ddp_kwargs = DistributedDataParallelKwargs(find_unused_parameters=True)
+        deepspeed_plugin = DeepSpeedPlugin(hf_ds_config='./ds_config_zero2.json')
+        accelerator = Accelerator(kwargs_handlers=[ddp_kwargs], deepspeed_plugin=deepspeed_plugin)
+        print("Accelerator initialized:", accelerator)
+
         self.args.content = load_content(self.args)
         time_now = time.time()
 
@@ -402,7 +391,11 @@ class Model(nn.Module,VertexModel):
             else:
                 accelerator.print('Updating learning rate to {}'.format(scheduler.get_last_lr()[0]))
 
-
+        accelerator.wait_for_everyone()
+        if accelerator.is_local_main_process:
+            path = './checkpoints'  # unique checkpoint saving path
+            #del_files(path)  # delete checkpoint files
+            accelerator.print('success delete checkpoints')
     def calcute_lags(self, x_enc):
         q_fft = torch.fft.rfft(x_enc.permute(0, 2, 1).contiguous(), dim=-1)
         k_fft = torch.fft.rfft(x_enc.permute(0, 2, 1).contiguous(), dim=-1)

@@ -100,10 +100,10 @@ parser.add_argument('--llm_layers', type=int, default=6)
 parser.add_argument('--percent', type=int, default=100)
 
 args = parser.parse_args()
-ddp_kwargs = DistributedDataParallelKwargs(find_unused_parameters=True)
-deepspeed_plugin = DeepSpeedPlugin(hf_ds_config='./ds_config_zero2.json')
-accelerator = Accelerator(kwargs_handlers=[ddp_kwargs], deepspeed_plugin=deepspeed_plugin)
-
+#ddp_kwargs = DistributedDataParallelKwargs(find_unused_parameters=True)
+#deepspeed_plugin = DeepSpeedPlugin(hf_ds_config='./ds_config_zero2.json')
+#accelerator = Accelerator(kwargs_handlers=[ddp_kwargs], deepspeed_plugin=deepspeed_plugin)
+#print("Accelerator initialized:", accelerator)
 
 #####################################VERTEX####################################
 PROJECT_ID = "itg-bpma-gbl-ww-np"  # @param {type:"string"}
@@ -162,19 +162,14 @@ for ii in range(args.itr):
     path = os.path.join(args.checkpoints,
                         setting + '-' + args.model_comment)  # unique checkpoint saving path
     args.content = load_content(args)
-    if not os.path.exists(path) and accelerator.is_local_main_process:
-        os.makedirs(path)
+    #if not os.path.exists(path) #and accelerator.is_local_main_process:
+     #   os.makedirs(path)
 
 
     ################################################ VERTEXXX
     vertexai.preview.init(remote=True)
-    model.train_model.vertex.remote_config.container_uri = "europe-west1-docker.pkg.dev/itg-bpma-gbl-ww-np/torch-training/torch-train:latest"
+    model.train_model.vertex.remote_config.container_uri = "europe-west1-docker.pkg.dev/itg-bpma-gbl-ww-np/accelerate-torch-training/torch-train:latest"
     model.train_model.vertex.remote_config.enable_cuda = True
 
-    model.train_model(train_loader,vali_loader,test_loader,accelerator,path)
+    model.train_model(train_loader,vali_loader,test_loader,path)
 
-accelerator.wait_for_everyone()
-if accelerator.is_local_main_process:
-    path = './checkpoints'  # unique checkpoint saving path
-    #del_files(path)  # delete checkpoint files
-    accelerator.print('success delete checkpoints')
