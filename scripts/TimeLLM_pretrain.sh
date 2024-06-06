@@ -1,15 +1,15 @@
 model_name=TimeLLM
-train_epochs=2
+train_epochs=1
 learning_rate=0.001
 llama_layers=32
 
 master_port=00098
 num_process=1
-batch_size=24
+batch_size=2
 d_model=32
 d_ff=128
 
-comment='TimeLLM-Pretrain-26-8640'
+comment='TMS_TEST'
 
 accelerate launch --mixed_precision bf16 --num_processes $num_process --main_process_port $master_port run_main.py \
   --task_name long_term_forecast \
@@ -18,12 +18,12 @@ accelerate launch --mixed_precision bf16 --num_processes $num_process --main_pro
   --data_path ETTh1.csv \
   --model_id Pretrain \
   --model $model_name \
-  --data ETTh1 \
+  --data pretrain \
   --features MS \
   --target OT \
-  --seq_len 26 \
-  --label_len 4 \
-  --pred_len 4 \
+  --seq_len 13 \
+  --label_len 1 \
+  --pred_len 1 \
   --factor 3 \
   --enc_in 9 \
   --dec_in 9 \
