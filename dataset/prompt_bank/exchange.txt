@@ -1,0 +1,1 @@
+Includes historical exchange rates between different currencies. This data often has high variability due to market dynamics, geopolitical events, and economic indicators.

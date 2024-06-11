@@ -1,13 +1,12 @@
-torch==2.2.2
-accelerate==0.28.0
-einops==0.7.0
-matplotlib==3.7.0
-numpy==1.23.5
-pandas==1.5.3
-scikit_learn==1.2.2
-scipy==1.12.0
-tqdm==4.65.0
-peft==0.4.0
-transformers==4.31.0
-deepspeed==0.14.0
-sentencepiece==0.2.0
+accelerate==0.20.3  # Check for the latest compatible version
+einops==0.7.0       # Latest available stable version
+matplotlib==3.7.0   # Latest version compatible with Python 3.10
+numpy==1.23.5       # Latest stable version compatible with Python 3.10
+pandas==1.5.3       # Latest stable version compatible with Python 3.10
+scikit-learn==1.2.2 # Updated to match the latest Python 3.10 compatibility
+scipy==1.8.1        # Version 1.5.4 has compatibility issues; 1.8.1 is better suited
+#torch==2.0.1        # Ensure this version of PyTorch is compatible with Python 3.10
+tqdm==4.65.0        # Latest available stable version
+peft==0.4.0         # Verify this lesser-known package for updates or alternatives if necessary
+transformers==4.31.0 # Latest stable version compatible with Python 3.10
+#deepspeed==0.13.0   # Check the latest version for Python 3.10 compatibility

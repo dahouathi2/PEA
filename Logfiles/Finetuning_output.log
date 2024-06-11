@@ -1,0 +1,984 @@
+Processing products from 1 to 2
+[2024-05-22 10:15:11,152] [INFO] [real_accelerator.py:133:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+[2024-05-22 10:15:14,073] [INFO] [real_accelerator.py:133:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+Success Loading Pretrained Model
+Starting fine-tuning on product 1
+Epoch: 1 cost time: 12.233182668685913
+Epoch: 1 | Train Loss: 0.3021652 Vali Loss: 0.5750351 Test Loss: 0.5706799 MAE Loss: 0.5728618
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.385543823242188
+Epoch: 2 | Train Loss: 0.3413535 Vali Loss: 0.5721296 Test Loss: 0.5607353 MAE Loss: 0.5669207
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 1
+Starting fine-tuning on product 2
+Epoch: 1 cost time: 11.51722240447998
+Epoch: 1 | Train Loss: 0.6728597 Vali Loss: 0.5445577 Test Loss: 0.4186482 MAE Loss: 0.5497665
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.06907343864441
+Epoch: 2 | Train Loss: 0.5519457 Vali Loss: 0.5414287 Test Loss: 0.4039043 MAE Loss: 0.5373497
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 2
+Processing products from 3 to 4
+[2024-05-22 10:16:47,653] [INFO] [real_accelerator.py:133:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+[2024-05-22 10:16:50,509] [INFO] [real_accelerator.py:133:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+Success Loading last Finetuned Model on 2 products
+Starting fine-tuning on product 3
+Epoch: 1 cost time: 12.171486377716064
+Epoch: 1 | Train Loss: 0.6132722 Vali Loss: 0.4743549 Test Loss: 0.5793288 MAE Loss: 0.6342298
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.41373085975647
+Epoch: 2 | Train Loss: 0.6074550 Vali Loss: 0.4725670 Test Loss: 0.5781214 MAE Loss: 0.6320707
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 3
+Starting fine-tuning on product 4
+Epoch: 1 cost time: 11.096920490264893
+Epoch: 1 | Train Loss: 1.1430731 Vali Loss: 1.4123305 Test Loss: 1.6531184 MAE Loss: 0.9877043
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.24864387512207
+Epoch: 2 | Train Loss: 1.1373497 Vali Loss: 1.3981488 Test Loss: 1.6386331 MAE Loss: 0.9808913
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 4
+Processing products from 5 to 6
+[2024-05-22 10:18:13,890] [INFO] [real_accelerator.py:133:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+[2024-05-22 10:18:16,909] [INFO] [real_accelerator.py:133:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+Success Loading last Finetuned Model on 4 products
+Starting fine-tuning on product 5
+Epoch: 1 cost time: 12.793213129043579
+Epoch: 1 | Train Loss: 0.8303586 Vali Loss: 0.5389419 Test Loss: 1.2209937 MAE Loss: 0.8388742
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.51185941696167
+Epoch: 2 | Train Loss: 0.9225624 Vali Loss: 0.5389144 Test Loss: 1.2178689 MAE Loss: 0.8373222
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 5
+Starting fine-tuning on product 6
+Epoch: 1 cost time: 11.67706036567688
+Epoch: 1 | Train Loss: 0.3573700 Vali Loss: 3.4844085 Test Loss: 1.0889117 MAE Loss: 0.7776338
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.69891905784607
+Epoch: 2 | Train Loss: 0.2541362 Vali Loss: 3.4843294 Test Loss: 1.0623159 MAE Loss: 0.7703104
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 6
+FineTune up to 8 products is done
+Processing products from 1 to 25
+[2024-05-22 10:20:19,237] [INFO] [real_accelerator.py:133:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+[2024-05-22 10:20:23,259] [INFO] [real_accelerator.py:133:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+Success Loading Pretrained Model
+Starting fine-tuning on product 1
+Epoch: 1 cost time: 12.353135824203491
+Epoch: 1 | Train Loss: 0.3021652 Vali Loss: 0.5750351 Test Loss: 0.5706799 MAE Loss: 0.5728618
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.548619508743286
+Epoch: 2 | Train Loss: 0.3413535 Vali Loss: 0.5721296 Test Loss: 0.5607353 MAE Loss: 0.5669207
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 1
+Starting fine-tuning on product 2
+Epoch: 1 cost time: 11.664689779281616
+Epoch: 1 | Train Loss: 0.6728597 Vali Loss: 0.5445577 Test Loss: 0.4186482 MAE Loss: 0.5497665
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.706925868988037
+Epoch: 2 | Train Loss: 0.5519457 Vali Loss: 0.5414287 Test Loss: 0.4039043 MAE Loss: 0.5373497
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 2
+Starting fine-tuning on product 3
+Epoch: 1 cost time: 11.59748649597168
+Epoch: 1 | Train Loss: 0.6150339 Vali Loss: 0.4743445 Test Loss: 0.5818168 MAE Loss: 0.6357257
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.403406381607056
+Epoch: 2 | Train Loss: 0.5996555 Vali Loss: 0.4726281 Test Loss: 0.5790551 MAE Loss: 0.6325853
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 3
+Starting fine-tuning on product 4
+Epoch: 1 cost time: 11.625576972961426
+Epoch: 1 | Train Loss: 1.0611638 Vali Loss: 1.4264375 Test Loss: 1.6575895 MAE Loss: 0.9899328
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.777397871017456
+Epoch: 2 | Train Loss: 1.1084478 Vali Loss: 1.4102692 Test Loss: 1.6436248 MAE Loss: 0.9839837
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 4
+Starting fine-tuning on product 5
+Epoch: 1 cost time: 11.84285569190979
+Epoch: 1 | Train Loss: 0.8152177 Vali Loss: 0.5343524 Test Loss: 1.2115091 MAE Loss: 0.8364851
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 12.010202646255493
+Epoch: 2 | Train Loss: 0.6767117 Vali Loss: 0.5332433 Test Loss: 1.2121737 MAE Loss: 0.8362397
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 5
+Starting fine-tuning on product 6
+Epoch: 1 cost time: 11.858433485031128
+Epoch: 1 | Train Loss: 0.3142194 Vali Loss: 3.4299020 Test Loss: 1.1070689 MAE Loss: 0.7770174
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 12.25973892211914
+Epoch: 2 | Train Loss: 0.3423495 Vali Loss: 3.4607882 Test Loss: 1.0914616 MAE Loss: 0.7737955
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 6
+Starting fine-tuning on product 7
+Epoch: 1 cost time: 12.362636804580688
+Epoch: 1 | Train Loss: 0.6892085 Vali Loss: 0.9681040 Test Loss: 0.8775358 MAE Loss: 0.6622060
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 12.34969687461853
+Epoch: 2 | Train Loss: 0.8616366 Vali Loss: 0.9564154 Test Loss: 0.8592124 MAE Loss: 0.6582187
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 7
+Starting fine-tuning on product 8
+Epoch: 1 cost time: 11.628530025482178
+Epoch: 1 | Train Loss: 0.2058102 Vali Loss: 0.1654565 Test Loss: 0.4691469 MAE Loss: 0.4684725
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.812374114990234
+Epoch: 2 | Train Loss: 0.1616117 Vali Loss: 0.1631253 Test Loss: 0.4645282 MAE Loss: 0.4665938
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 8
+Starting fine-tuning on product 9
+Epoch: 1 cost time: 12.090817928314209
+Epoch: 1 | Train Loss: 0.5589685 Vali Loss: 0.6869124 Test Loss: 1.4158106 MAE Loss: 0.8716466
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 12.026126146316528
+Epoch: 2 | Train Loss: 0.6280429 Vali Loss: 0.6847994 Test Loss: 1.4087495 MAE Loss: 0.8709767
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 9
+Starting fine-tuning on product 10
+Epoch: 1 cost time: 12.155099153518677
+Epoch: 1 | Train Loss: 0.8154184 Vali Loss: 1.8361321 Test Loss: 2.3271223 MAE Loss: 1.0937123
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.991849422454834
+Epoch: 2 | Train Loss: 0.9565746 Vali Loss: 1.7990719 Test Loss: 2.2898864 MAE Loss: 1.0917979
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 10
+Starting fine-tuning on product 11
+Epoch: 1 cost time: 12.16068959236145
+Epoch: 1 | Train Loss: 0.7507411 Vali Loss: 2.2194220 Test Loss: 2.0328764 MAE Loss: 0.9356706
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 12.501533508300781
+Epoch: 2 | Train Loss: 0.7290313 Vali Loss: 2.2086700 Test Loss: 2.0284605 MAE Loss: 0.9357295
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 11
+Starting fine-tuning on product 12
+Epoch: 1 cost time: 12.376354217529297
+Epoch: 1 | Train Loss: 0.3072196 Vali Loss: 1.1560156 Test Loss: 0.7069545 MAE Loss: 0.6648870
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 12.408338785171509
+Epoch: 2 | Train Loss: 0.3051129 Vali Loss: 1.1581352 Test Loss: 0.7018540 MAE Loss: 0.6628510
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 12
+Starting fine-tuning on product 13
+Epoch: 1 cost time: 12.255760908126831
+Epoch: 1 | Train Loss: 0.5528956 Vali Loss: 0.9558328 Test Loss: 1.0930537 MAE Loss: 0.8047064
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 12.078765392303467
+Epoch: 2 | Train Loss: 0.6782827 Vali Loss: 0.9505271 Test Loss: 1.0865942 MAE Loss: 0.8024496
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 13
+Starting fine-tuning on product 14
+Epoch: 1 cost time: 12.083489179611206
+Epoch: 1 | Train Loss: 0.5183899 Vali Loss: 3.6707913 Test Loss: 1.3664814 MAE Loss: 0.8972875
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.87204885482788
+Epoch: 2 | Train Loss: 0.5571764 Vali Loss: 3.6652777 Test Loss: 1.3687289 MAE Loss: 0.8961718
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 14
+Starting fine-tuning on product 15
+Epoch: 1 cost time: 12.103838682174683
+Epoch: 1 | Train Loss: 0.5569820 Vali Loss: 0.5872317 Test Loss: 1.3361369 MAE Loss: 0.8525102
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 12.119695901870728
+Epoch: 2 | Train Loss: 0.6067698 Vali Loss: 0.5852474 Test Loss: 1.3307148 MAE Loss: 0.8543757
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 15
+Starting fine-tuning on product 16
+Epoch: 1 cost time: 12.24689245223999
+Epoch: 1 | Train Loss: 0.6399131 Vali Loss: 0.6922692 Test Loss: 0.5073881 MAE Loss: 0.5305920
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 12.229117393493652
+Epoch: 2 | Train Loss: 0.6136400 Vali Loss: 0.6948376 Test Loss: 0.5113807 MAE Loss: 0.5324046
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 16
+Starting fine-tuning on product 17
+Epoch: 1 cost time: 11.914498090744019
+Epoch: 1 | Train Loss: 0.4967491 Vali Loss: 0.9881349 Test Loss: 0.8229515 MAE Loss: 0.6881248
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 12.147854804992676
+Epoch: 2 | Train Loss: 0.5647779 Vali Loss: 0.9872082 Test Loss: 0.8263854 MAE Loss: 0.6913327
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 17
+Starting fine-tuning on product 18
+Epoch: 1 cost time: 12.334298133850098
+Epoch: 1 | Train Loss: 0.4868626 Vali Loss: 0.5115129 Test Loss: 0.5208859 MAE Loss: 0.5731936
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 12.181172847747803
+Epoch: 2 | Train Loss: 0.5213320 Vali Loss: 0.5141236 Test Loss: 0.5203770 MAE Loss: 0.5711290
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 18
+Starting fine-tuning on product 19
+Epoch: 1 cost time: 12.033604621887207
+Epoch: 1 | Train Loss: 0.1001984 Vali Loss: 0.1168003 Test Loss: 0.3567097 MAE Loss: 0.3200770
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 12.208586692810059
+Epoch: 2 | Train Loss: 0.0763764 Vali Loss: 0.1179537 Test Loss: 0.3548170 MAE Loss: 0.3177486
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 19
+Starting fine-tuning on product 20
+Epoch: 1 cost time: 12.281933784484863
+Epoch: 1 | Train Loss: 0.3952868 Vali Loss: 0.5093916 Test Loss: 0.7601834 MAE Loss: 0.6304244
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 12.185602188110352
+Epoch: 2 | Train Loss: 0.3875719 Vali Loss: 0.5096967 Test Loss: 0.7629965 MAE Loss: 0.6316646
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 20
+Starting fine-tuning on product 21
+Epoch: 1 cost time: 12.378203630447388
+Epoch: 1 | Train Loss: 0.2826794 Vali Loss: 0.6227719 Test Loss: 0.8476306 MAE Loss: 0.7084453
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.922362565994263
+Epoch: 2 | Train Loss: 0.2611726 Vali Loss: 0.6226285 Test Loss: 0.8474607 MAE Loss: 0.7085429
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 21
+Starting fine-tuning on product 22
+Epoch: 1 cost time: 11.716980457305908
+Epoch: 1 | Train Loss: 0.6736711 Vali Loss: 0.8040198 Test Loss: 0.7978758 MAE Loss: 0.7060137
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 12.05611515045166
+Epoch: 2 | Train Loss: 0.6079432 Vali Loss: 0.8016038 Test Loss: 0.7872952 MAE Loss: 0.6974903
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 22
+Starting fine-tuning on product 23
+Epoch: 1 cost time: 12.197999238967896
+Epoch: 1 | Train Loss: 0.5472566 Vali Loss: 0.2998255 Test Loss: 0.7598746 MAE Loss: 0.6911659
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 12.454092025756836
+Epoch: 2 | Train Loss: 0.6661100 Vali Loss: 0.3033114 Test Loss: 0.7586074 MAE Loss: 0.6926852
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 23
+Starting fine-tuning on product 24
+Epoch: 1 cost time: 12.351048469543457
+Epoch: 1 | Train Loss: 0.6012205 Vali Loss: 0.8698358 Test Loss: 0.7410610 MAE Loss: 0.7119538
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 12.208216905593872
+Epoch: 2 | Train Loss: 0.5306853 Vali Loss: 0.8605645 Test Loss: 0.7450229 MAE Loss: 0.7168980
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 24
+Starting fine-tuning on product 25
+Epoch: 1 cost time: 12.085670709609985
+Epoch: 1 | Train Loss: 0.7002294 Vali Loss: 0.2850242 Test Loss: 1.2232069 MAE Loss: 0.7261472
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 12.127564430236816
+Epoch: 2 | Train Loss: 0.5550228 Vali Loss: 0.2887290 Test Loss: 1.2223083 MAE Loss: 0.7256951
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 25
+Processing products from 26 to 50
+[2024-05-22 10:35:34,304] [INFO] [real_accelerator.py:133:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+[2024-05-22 10:35:37,459] [INFO] [real_accelerator.py:133:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+Success Loading last Finetuned Model on 25 products
+Starting fine-tuning on product 26
+Epoch: 1 cost time: 12.80705451965332
+Epoch: 1 | Train Loss: 0.2776289 Vali Loss: 0.7845536 Test Loss: 0.6600320 MAE Loss: 0.6505201
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.646708488464355
+Epoch: 2 | Train Loss: 0.2633900 Vali Loss: 0.7842650 Test Loss: 0.6602586 MAE Loss: 0.6510298
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 26
+Starting fine-tuning on product 27
+Epoch: 1 cost time: 11.688143730163574
+Epoch: 1 | Train Loss: 0.9694901 Vali Loss: 1.7645286 Test Loss: 0.9611561 MAE Loss: 0.7310940
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.712161540985107
+Epoch: 2 | Train Loss: 1.0708522 Vali Loss: 1.7524279 Test Loss: 0.9548986 MAE Loss: 0.7304288
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 27
+Starting fine-tuning on product 28
+Epoch: 1 cost time: 11.664244651794434
+Epoch: 1 | Train Loss: 0.7446897 Vali Loss: 0.9328652 Test Loss: 2.4246501 MAE Loss: 1.0391366
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.714084386825562
+Epoch: 2 | Train Loss: 0.6569744 Vali Loss: 0.9319053 Test Loss: 2.4199357 MAE Loss: 1.0399640
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 28
+Starting fine-tuning on product 29
+Epoch: 1 cost time: 11.775366306304932
+Epoch: 1 | Train Loss: 0.4928012 Vali Loss: 0.5019855 Test Loss: 1.0041965 MAE Loss: 0.7926209
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.602938890457153
+Epoch: 2 | Train Loss: 0.5971108 Vali Loss: 0.5040336 Test Loss: 1.0005170 MAE Loss: 0.7899935
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 29
+Starting fine-tuning on product 30
+Epoch: 1 cost time: 11.575406551361084
+Epoch: 1 | Train Loss: 0.6552579 Vali Loss: 0.7049873 Test Loss: 0.6016917 MAE Loss: 0.5969418
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.701160430908203
+Epoch: 2 | Train Loss: 0.5465567 Vali Loss: 0.7051413 Test Loss: 0.6007395 MAE Loss: 0.5970690
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 30
+Starting fine-tuning on product 31
+Epoch: 1 cost time: 11.883228778839111
+Epoch: 1 | Train Loss: 0.6120307 Vali Loss: 0.4583166 Test Loss: 0.7334518 MAE Loss: 0.6743346
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.614709615707397
+Epoch: 2 | Train Loss: 0.7240362 Vali Loss: 0.4507957 Test Loss: 0.7382822 MAE Loss: 0.6782273
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 31
+Starting fine-tuning on product 32
+Epoch: 1 cost time: 11.850693464279175
+Epoch: 1 | Train Loss: 0.3592248 Vali Loss: 0.2236173 Test Loss: 0.5096721 MAE Loss: 0.5414170
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.676908016204834
+Epoch: 2 | Train Loss: 0.2951674 Vali Loss: 0.2233875 Test Loss: 0.5080239 MAE Loss: 0.5406484
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 32
+Starting fine-tuning on product 33
+Epoch: 1 cost time: 11.442508697509766
+Epoch: 1 | Train Loss: 0.4720448 Vali Loss: 1.1224240 Test Loss: 0.6447413 MAE Loss: 0.6497911
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 10.959373235702515
+Epoch: 2 | Train Loss: 0.3869725 Vali Loss: 1.1151734 Test Loss: 0.6461122 MAE Loss: 0.6518088
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 33
+Starting fine-tuning on product 34
+Epoch: 1 cost time: 11.116294384002686
+Epoch: 1 | Train Loss: 0.3238493 Vali Loss: 1.5512550 Test Loss: 0.7719257 MAE Loss: 0.7031387
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 10.96698808670044
+Epoch: 2 | Train Loss: 0.3122971 Vali Loss: 1.5429762 Test Loss: 0.7745974 MAE Loss: 0.7060138
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 34
+Starting fine-tuning on product 35
+Epoch: 1 cost time: 11.187146186828613
+Epoch: 1 | Train Loss: 0.6356554 Vali Loss: 0.5208838 Test Loss: 0.7861162 MAE Loss: 0.7001510
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.220026016235352
+Epoch: 2 | Train Loss: 0.6243181 Vali Loss: 0.5193604 Test Loss: 0.7870221 MAE Loss: 0.7028511
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 35
+Starting fine-tuning on product 36
+Epoch: 1 cost time: 11.121024370193481
+Epoch: 1 | Train Loss: 0.4573664 Vali Loss: 0.4873229 Test Loss: 0.5735184 MAE Loss: 0.5719159
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 10.969915866851807
+Epoch: 2 | Train Loss: 0.5217321 Vali Loss: 0.4877483 Test Loss: 0.5727149 MAE Loss: 0.5715795
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 36
+Starting fine-tuning on product 37
+Epoch: 1 cost time: 11.139801502227783
+Epoch: 1 | Train Loss: 0.3500060 Vali Loss: 4.8686085 Test Loss: 0.8962382 MAE Loss: 0.7537747
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.12246036529541
+Epoch: 2 | Train Loss: 0.2430939 Vali Loss: 4.8633959 Test Loss: 0.9227231 MAE Loss: 0.7617944
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 37
+Starting fine-tuning on product 38
+Epoch: 1 cost time: 11.351351261138916
+Epoch: 1 | Train Loss: 0.2838160 Vali Loss: 2.6851246 Test Loss: 0.7460737 MAE Loss: 0.6650399
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.269256830215454
+Epoch: 2 | Train Loss: 0.3432199 Vali Loss: 2.6765935 Test Loss: 0.7428521 MAE Loss: 0.6656031
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 38
+Starting fine-tuning on product 39
+Epoch: 1 cost time: 11.328019380569458
+Epoch: 1 | Train Loss: 0.3082032 Vali Loss: 1.1448833 Test Loss: 0.5669857 MAE Loss: 0.5940343
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.228892087936401
+Epoch: 2 | Train Loss: 0.4207509 Vali Loss: 1.1467270 Test Loss: 0.5657509 MAE Loss: 0.5933208
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 39
+Starting fine-tuning on product 40
+Epoch: 1 cost time: 11.585405588150024
+Epoch: 1 | Train Loss: 0.3833664 Vali Loss: 0.3473192 Test Loss: 0.5157781 MAE Loss: 0.5833265
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.476419687271118
+Epoch: 2 | Train Loss: 0.4551644 Vali Loss: 0.3531027 Test Loss: 0.5194138 MAE Loss: 0.5879147
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 40
+Starting fine-tuning on product 41
+Epoch: 1 cost time: 11.463918685913086
+Epoch: 1 | Train Loss: 0.3425292 Vali Loss: 0.2357841 Test Loss: 0.6917462 MAE Loss: 0.5430064
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.309438705444336
+Epoch: 2 | Train Loss: 0.3283986 Vali Loss: 0.2363660 Test Loss: 0.6895432 MAE Loss: 0.5426070
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 41
+Starting fine-tuning on product 42
+Epoch: 1 cost time: 11.461373805999756
+Epoch: 1 | Train Loss: 0.5129265 Vali Loss: 0.4768468 Test Loss: 0.7023146 MAE Loss: 0.6763286
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.38597846031189
+Epoch: 2 | Train Loss: 0.5056741 Vali Loss: 0.4781672 Test Loss: 0.7026768 MAE Loss: 0.6783797
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 42
+Starting fine-tuning on product 43
+Epoch: 1 cost time: 11.373548030853271
+Epoch: 1 | Train Loss: 0.8990548 Vali Loss: 0.3003680 Test Loss: 0.4247723 MAE Loss: 0.5285083
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.167425632476807
+Epoch: 2 | Train Loss: 0.9347659 Vali Loss: 0.3004234 Test Loss: 0.4269668 MAE Loss: 0.5309000
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 43
+Starting fine-tuning on product 44
+Epoch: 1 cost time: 11.348859071731567
+Epoch: 1 | Train Loss: 0.5156094 Vali Loss: 2.2477452 Test Loss: 1.2757607 MAE Loss: 0.8110480
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.258815050125122
+Epoch: 2 | Train Loss: 0.4682025 Vali Loss: 2.2481711 Test Loss: 1.2758353 MAE Loss: 0.8103557
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 44
+Starting fine-tuning on product 45
+Epoch: 1 cost time: 11.40138840675354
+Epoch: 1 | Train Loss: 0.2090616 Vali Loss: 1.1608251 Test Loss: 0.5069916 MAE Loss: 0.5529246
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.342728853225708
+Epoch: 2 | Train Loss: 0.2012452 Vali Loss: 1.1629383 Test Loss: 0.5098295 MAE Loss: 0.5567782
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 45
+Starting fine-tuning on product 46
+Epoch: 1 cost time: 11.253033638000488
+Epoch: 1 | Train Loss: 0.3453634 Vali Loss: 0.3624967 Test Loss: 0.5693199 MAE Loss: 0.5946831
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.044063091278076
+Epoch: 2 | Train Loss: 0.3740862 Vali Loss: 0.3626920 Test Loss: 0.5687409 MAE Loss: 0.5941665
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 46
+Starting fine-tuning on product 47
+Epoch: 1 cost time: 11.000565528869629
+Epoch: 1 | Train Loss: 0.1731409 Vali Loss: 0.2790459 Test Loss: 3.4049483 MAE Loss: 0.8512315
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.408320665359497
+Epoch: 2 | Train Loss: 0.2666984 Vali Loss: 0.2758071 Test Loss: 3.3791127 MAE Loss: 0.8496650
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 47
+Starting fine-tuning on product 48
+Epoch: 1 cost time: 11.326289176940918
+Epoch: 1 | Train Loss: 0.4491794 Vali Loss: 0.5448095 Test Loss: 0.8560636 MAE Loss: 0.7298464
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.344129800796509
+Epoch: 2 | Train Loss: 0.4716684 Vali Loss: 0.5425011 Test Loss: 0.8593486 MAE Loss: 0.7332862
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 48
+Starting fine-tuning on product 49
+Epoch: 1 cost time: 11.32325530052185
+Epoch: 1 | Train Loss: 0.8646732 Vali Loss: 0.5184248 Test Loss: 0.7572988 MAE Loss: 0.6829518
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.23637580871582
+Epoch: 2 | Train Loss: 0.7727248 Vali Loss: 0.5187062 Test Loss: 0.7543178 MAE Loss: 0.6835873
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 49
+Starting fine-tuning on product 50
+Epoch: 1 cost time: 11.40992522239685
+Epoch: 1 | Train Loss: 0.5312847 Vali Loss: 0.5023213 Test Loss: 8.4504767 MAE Loss: 1.3864953
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.526880502700806
+Epoch: 2 | Train Loss: 0.5072273 Vali Loss: 0.4962284 Test Loss: 8.4075941 MAE Loss: 1.3854376
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 50
+Processing products from 51 to 75
+[2024-05-22 10:49:52,352] [INFO] [real_accelerator.py:133:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+[2024-05-22 10:49:55,409] [INFO] [real_accelerator.py:133:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+Success Loading last Finetuned Model on 50 products
+Starting fine-tuning on product 51
+Epoch: 1 cost time: 12.585981845855713
+Epoch: 1 | Train Loss: 0.2281166 Vali Loss: 3.2658958 Test Loss: 0.6283668 MAE Loss: 0.6308980
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.573668479919434
+Epoch: 2 | Train Loss: 0.2701943 Vali Loss: 3.2772816 Test Loss: 0.6248174 MAE Loss: 0.6293575
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 51
+Starting fine-tuning on product 52
+Epoch: 1 cost time: 11.513994693756104
+Epoch: 1 | Train Loss: 0.5384699 Vali Loss: 1.0340701 Test Loss: 0.7812593 MAE Loss: 0.6984536
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.455811023712158
+Epoch: 2 | Train Loss: 0.5649767 Vali Loss: 1.0335869 Test Loss: 0.7775296 MAE Loss: 0.7031278
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 52
+Starting fine-tuning on product 53
+Epoch: 1 cost time: 11.511243343353271
+Epoch: 1 | Train Loss: 0.7247282 Vali Loss: 0.4308307 Test Loss: 0.4589792 MAE Loss: 0.5361010
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.437815427780151
+Epoch: 2 | Train Loss: 0.7656758 Vali Loss: 0.4268106 Test Loss: 0.4587421 MAE Loss: 0.5347549
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 53
+Starting fine-tuning on product 54
+Epoch: 1 cost time: 11.538712739944458
+Epoch: 1 | Train Loss: 0.2971106 Vali Loss: 2.6855804 Test Loss: 0.6914855 MAE Loss: 0.6271928
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.47193956375122
+Epoch: 2 | Train Loss: 0.2413889 Vali Loss: 2.6871211 Test Loss: 0.6908950 MAE Loss: 0.6279385
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 54
+Starting fine-tuning on product 55
+Epoch: 1 cost time: 11.57679557800293
+Epoch: 1 | Train Loss: 0.3069472 Vali Loss: 0.6765979 Test Loss: 0.6761669 MAE Loss: 0.6542235
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.598714351654053
+Epoch: 2 | Train Loss: 0.3300078 Vali Loss: 0.6747319 Test Loss: 0.6760451 MAE Loss: 0.6534205
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 55
+Starting fine-tuning on product 56
+Epoch: 1 cost time: 11.238093614578247
+Epoch: 1 | Train Loss: 0.3258751 Vali Loss: 0.5587773 Test Loss: 0.6126018 MAE Loss: 0.5764045
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.505233526229858
+Epoch: 2 | Train Loss: 0.3750958 Vali Loss: 0.5588875 Test Loss: 0.6098630 MAE Loss: 0.5746408
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 56
+Starting fine-tuning on product 57
+Epoch: 1 cost time: 11.542223453521729
+Epoch: 1 | Train Loss: 0.4051287 Vali Loss: 0.6146339 Test Loss: 0.4223486 MAE Loss: 0.5097807
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.529696226119995
+Epoch: 2 | Train Loss: 0.3959139 Vali Loss: 0.6191318 Test Loss: 0.4209079 MAE Loss: 0.5050072
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 57
+Starting fine-tuning on product 58
+Epoch: 1 cost time: 11.651081323623657
+Epoch: 1 | Train Loss: 0.5257542 Vali Loss: 0.3949952 Test Loss: 0.2942614 MAE Loss: 0.3998438
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.404412746429443
+Epoch: 2 | Train Loss: 0.4163119 Vali Loss: 0.3965587 Test Loss: 0.2937538 MAE Loss: 0.3977427
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 58
+Starting fine-tuning on product 59
+Epoch: 1 cost time: 11.313068151473999
+Epoch: 1 | Train Loss: 0.3901580 Vali Loss: 0.4555770 Test Loss: 0.9596894 MAE Loss: 0.6927541
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.330025911331177
+Epoch: 2 | Train Loss: 0.4400344 Vali Loss: 0.4538935 Test Loss: 0.9606978 MAE Loss: 0.6915325
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 59
+Starting fine-tuning on product 60
+Epoch: 1 cost time: 11.423210382461548
+Epoch: 1 | Train Loss: 0.7052289 Vali Loss: 1.3514956 Test Loss: 3.6123981 MAE Loss: 1.2260274
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.18138599395752
+Epoch: 2 | Train Loss: 0.6395757 Vali Loss: 1.3454041 Test Loss: 3.6082692 MAE Loss: 1.2266056
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 60
+Starting fine-tuning on product 61
+Epoch: 1 cost time: 11.467365026473999
+Epoch: 1 | Train Loss: 0.3893865 Vali Loss: 0.5117073 Test Loss: 0.8496546 MAE Loss: 0.7272401
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.491119861602783
+Epoch: 2 | Train Loss: 0.3721379 Vali Loss: 0.5122678 Test Loss: 0.8480512 MAE Loss: 0.7255734
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 61
+Starting fine-tuning on product 62
+Epoch: 1 cost time: 11.529160022735596
+Epoch: 1 | Train Loss: 0.5523104 Vali Loss: 0.5596896 Test Loss: 0.9758468 MAE Loss: 0.7318169
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.431769847869873
+Epoch: 2 | Train Loss: 0.4877038 Vali Loss: 0.5583898 Test Loss: 0.9748617 MAE Loss: 0.7320669
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 62
+Starting fine-tuning on product 63
+Epoch: 1 cost time: 11.267747402191162
+Epoch: 1 | Train Loss: 0.4443357 Vali Loss: 0.3889795 Test Loss: 0.6223095 MAE Loss: 0.5999010
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 10.81835651397705
+Epoch: 2 | Train Loss: 0.4913270 Vali Loss: 0.3897435 Test Loss: 0.6192606 MAE Loss: 0.5993456
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 63
+Starting fine-tuning on product 64
+Epoch: 1 cost time: 11.13043212890625
+Epoch: 1 | Train Loss: 0.6703739 Vali Loss: 0.8342864 Test Loss: 1.1003053 MAE Loss: 0.7988759
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.200173616409302
+Epoch: 2 | Train Loss: 0.6671202 Vali Loss: 0.8347617 Test Loss: 1.0984655 MAE Loss: 0.7975497
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 64
+Starting fine-tuning on product 65
+Epoch: 1 cost time: 11.727625131607056
+Epoch: 1 | Train Loss: 0.7412939 Vali Loss: 0.6797730 Test Loss: 0.9338387 MAE Loss: 0.7768946
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.50879192352295
+Epoch: 2 | Train Loss: 0.8383545 Vali Loss: 0.6772716 Test Loss: 0.9290654 MAE Loss: 0.7780585
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 65
+Starting fine-tuning on product 66
+Epoch: 1 cost time: 11.3701810836792
+Epoch: 1 | Train Loss: 0.5194879 Vali Loss: 0.5580365 Test Loss: 1.1261365 MAE Loss: 0.7890080
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.435275793075562
+Epoch: 2 | Train Loss: 0.6107195 Vali Loss: 0.5575725 Test Loss: 1.1258407 MAE Loss: 0.7908495
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 66
+Starting fine-tuning on product 67
+Epoch: 1 cost time: 11.572946310043335
+Epoch: 1 | Train Loss: 0.6642330 Vali Loss: 0.9033205 Test Loss: 1.2865030 MAE Loss: 0.8278098
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.386328935623169
+Epoch: 2 | Train Loss: 0.5667017 Vali Loss: 0.9007457 Test Loss: 1.2843768 MAE Loss: 0.8285461
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 67
+Starting fine-tuning on product 68
+Epoch: 1 cost time: 11.497480869293213
+Epoch: 1 | Train Loss: 0.0500159 Vali Loss: 0.0702320 Test Loss: 0.1771792 MAE Loss: 0.1857737
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.414955139160156
+Epoch: 2 | Train Loss: 0.0944190 Vali Loss: 0.0670721 Test Loss: 0.1773828 MAE Loss: 0.1842000
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 68
+Starting fine-tuning on product 69
+Epoch: 1 cost time: 11.431033372879028
+Epoch: 1 | Train Loss: 0.2506155 Vali Loss: 2.2484796 Test Loss: 0.8004519 MAE Loss: 0.6693146
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.34529972076416
+Epoch: 2 | Train Loss: 0.1902631 Vali Loss: 2.2537687 Test Loss: 0.8092774 MAE Loss: 0.6749725
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 69
+Starting fine-tuning on product 70
+Epoch: 1 cost time: 11.446154594421387
+Epoch: 1 | Train Loss: 0.6075054 Vali Loss: 0.8271420 Test Loss: 0.8526256 MAE Loss: 0.7310908
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.24650263786316
+Epoch: 2 | Train Loss: 0.5198737 Vali Loss: 0.8220179 Test Loss: 0.8499180 MAE Loss: 0.7321683
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 70
+Starting fine-tuning on product 71
+Epoch: 1 cost time: 11.170945405960083
+Epoch: 1 | Train Loss: 0.2645564 Vali Loss: 0.2196373 Test Loss: 0.4285934 MAE Loss: 0.4522101
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.29559063911438
+Epoch: 2 | Train Loss: 0.2052784 Vali Loss: 0.2190641 Test Loss: 0.4308272 MAE Loss: 0.4528036
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 71
+Starting fine-tuning on product 72
+Epoch: 1 cost time: 11.41662335395813
+Epoch: 1 | Train Loss: 0.5484093 Vali Loss: 0.7296027 Test Loss: 0.9630430 MAE Loss: 0.7232402
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.372322082519531
+Epoch: 2 | Train Loss: 0.6046346 Vali Loss: 0.7388901 Test Loss: 0.9527050 MAE Loss: 0.7158118
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 72
+Starting fine-tuning on product 73
+Epoch: 1 cost time: 11.476757049560547
+Epoch: 1 | Train Loss: 0.8444462 Vali Loss: 0.6159177 Test Loss: 3.8204641 MAE Loss: 0.9858849
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.436057090759277
+Epoch: 2 | Train Loss: 0.7896023 Vali Loss: 0.6163752 Test Loss: 3.7952946 MAE Loss: 0.9848601
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 73
+Starting fine-tuning on product 74
+Epoch: 1 cost time: 11.461529016494751
+Epoch: 1 | Train Loss: 0.4243667 Vali Loss: 0.9446583 Test Loss: 2.2155384 MAE Loss: 1.0602703
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.48579478263855
+Epoch: 2 | Train Loss: 0.4668236 Vali Loss: 0.9477161 Test Loss: 2.2124827 MAE Loss: 1.0607402
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 74
+Starting fine-tuning on product 75
+Epoch: 1 cost time: 10.967503786087036
+Epoch: 1 | Train Loss: 0.6250277 Vali Loss: 0.4213544 Test Loss: 1.1235442 MAE Loss: 0.7534059
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.264970779418945
+Epoch: 2 | Train Loss: 0.5524607 Vali Loss: 0.4242348 Test Loss: 1.1212597 MAE Loss: 0.7512261
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 75
+Processing products from 76 to 100
+[2024-05-22 11:04:10,538] [INFO] [real_accelerator.py:133:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+[2024-05-22 11:04:13,501] [INFO] [real_accelerator.py:133:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+Success Loading last Finetuned Model on 75 products
+Starting fine-tuning on product 76
+Epoch: 1 cost time: 12.309386253356934
+Epoch: 1 | Train Loss: 0.7745090 Vali Loss: 0.4756339 Test Loss: 0.6174207 MAE Loss: 0.6032586
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.232395887374878
+Epoch: 2 | Train Loss: 0.7093550 Vali Loss: 0.4768670 Test Loss: 0.6173094 MAE Loss: 0.6021220
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 76
+Starting fine-tuning on product 77
+Epoch: 1 cost time: 11.440078496932983
+Epoch: 1 | Train Loss: 0.4307310 Vali Loss: 0.9702301 Test Loss: 0.6309850 MAE Loss: 0.6329207
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.386796236038208
+Epoch: 2 | Train Loss: 0.3418560 Vali Loss: 0.9580068 Test Loss: 0.6341542 MAE Loss: 0.6309633
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 77
+Starting fine-tuning on product 78
+Epoch: 1 cost time: 11.31267523765564
+Epoch: 1 | Train Loss: 0.5843177 Vali Loss: 0.6768419 Test Loss: 1.7877681 MAE Loss: 0.8343424
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.226587772369385
+Epoch: 2 | Train Loss: 0.5690050 Vali Loss: 0.6755742 Test Loss: 1.7805356 MAE Loss: 0.8304435
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 78
+Starting fine-tuning on product 79
+Epoch: 1 cost time: 11.320019483566284
+Epoch: 1 | Train Loss: 0.1787200 Vali Loss: 0.1721558 Test Loss: 0.3834348 MAE Loss: 0.3589573
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.282291173934937
+Epoch: 2 | Train Loss: 0.1617797 Vali Loss: 0.1708848 Test Loss: 0.3826302 MAE Loss: 0.3586352
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 79
+Starting fine-tuning on product 80
+Epoch: 1 cost time: 11.277819871902466
+Epoch: 1 | Train Loss: 0.4849432 Vali Loss: 0.6161154 Test Loss: 0.6974583 MAE Loss: 0.6452560
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.313297986984253
+Epoch: 2 | Train Loss: 0.5009251 Vali Loss: 0.6087202 Test Loss: 0.6910258 MAE Loss: 0.6431941
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 80
+Starting fine-tuning on product 81
+Epoch: 1 cost time: 11.091337442398071
+Epoch: 1 | Train Loss: 0.5125775 Vali Loss: 0.3299224 Test Loss: 0.5256479 MAE Loss: 0.5774991
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 10.893067598342896
+Epoch: 2 | Train Loss: 0.5434399 Vali Loss: 0.3286277 Test Loss: 0.5244678 MAE Loss: 0.5788078
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 81
+Starting fine-tuning on product 82
+Epoch: 1 cost time: 11.376317024230957
+Epoch: 1 | Train Loss: 0.6213077 Vali Loss: 3.2426277 Test Loss: 1.7750920 MAE Loss: 0.9263089
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.367890357971191
+Epoch: 2 | Train Loss: 0.6645419 Vali Loss: 3.2242023 Test Loss: 1.7456934 MAE Loss: 0.9257032
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 82
+Starting fine-tuning on product 83
+Epoch: 1 cost time: 11.291285276412964
+Epoch: 1 | Train Loss: 0.1985962 Vali Loss: 3.2645942 Test Loss: 1.0537588 MAE Loss: 0.7007739
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.35753345489502
+Epoch: 2 | Train Loss: 0.2145033 Vali Loss: 3.2819168 Test Loss: 1.0442408 MAE Loss: 0.7035417
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 83
+Starting fine-tuning on product 84
+Epoch: 1 cost time: 11.601534366607666
+Epoch: 1 | Train Loss: 0.4676179 Vali Loss: 0.8492874 Test Loss: 0.8093852 MAE Loss: 0.6924789
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.268116235733032
+Epoch: 2 | Train Loss: 0.5543250 Vali Loss: 0.8473135 Test Loss: 0.8059421 MAE Loss: 0.6908887
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 84
+Starting fine-tuning on product 85
+Epoch: 1 cost time: 11.485358238220215
+Epoch: 1 | Train Loss: 0.5658593 Vali Loss: 1.7249582 Test Loss: 3.8379706 MAE Loss: 1.1324345
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.383119821548462
+Epoch: 2 | Train Loss: 0.5963873 Vali Loss: 1.7231137 Test Loss: 3.8453890 MAE Loss: 1.1315311
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 85
+Starting fine-tuning on product 86
+Epoch: 1 cost time: 11.307298421859741
+Epoch: 1 | Train Loss: 0.7146228 Vali Loss: 0.9545146 Test Loss: 0.7702016 MAE Loss: 0.7016482
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.389792203903198
+Epoch: 2 | Train Loss: 0.7661651 Vali Loss: 0.9574332 Test Loss: 0.7701014 MAE Loss: 0.7001930
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 86
+Starting fine-tuning on product 87
+Epoch: 1 cost time: 11.187261581420898
+Epoch: 1 | Train Loss: 0.3997668 Vali Loss: 0.5369560 Test Loss: 0.6480394 MAE Loss: 0.6300080
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.437064409255981
+Epoch: 2 | Train Loss: 0.3384201 Vali Loss: 0.5402492 Test Loss: 0.6501525 MAE Loss: 0.6325266
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 87
+Starting fine-tuning on product 88
+Epoch: 1 cost time: 11.3912353515625
+Epoch: 1 | Train Loss: 0.7323103 Vali Loss: 0.5239779 Test Loss: 0.8549341 MAE Loss: 0.7199399
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.41391372680664
+Epoch: 2 | Train Loss: 0.6705643 Vali Loss: 0.5203070 Test Loss: 0.8558281 MAE Loss: 0.7210262
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 88
+Starting fine-tuning on product 89
+Epoch: 1 cost time: 11.35378623008728
+Epoch: 1 | Train Loss: 0.5971978 Vali Loss: 1.0308025 Test Loss: 0.9589964 MAE Loss: 0.7286850
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.271223068237305
+Epoch: 2 | Train Loss: 0.6592912 Vali Loss: 1.0229209 Test Loss: 0.9515258 MAE Loss: 0.7283341
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 89
+Starting fine-tuning on product 90
+Epoch: 1 cost time: 11.334470748901367
+Epoch: 1 | Train Loss: 0.3504777 Vali Loss: 0.3148372 Test Loss: 0.5025434 MAE Loss: 0.5730992
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.032673835754395
+Epoch: 2 | Train Loss: 0.3204904 Vali Loss: 0.3168490 Test Loss: 0.5038330 MAE Loss: 0.5745185
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 90
+Starting fine-tuning on product 91
+Epoch: 1 cost time: 11.348498582839966
+Epoch: 1 | Train Loss: 0.7464113 Vali Loss: 0.8469719 Test Loss: 0.4709222 MAE Loss: 0.5320543
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.350673913955688
+Epoch: 2 | Train Loss: 0.7110137 Vali Loss: 0.8524307 Test Loss: 0.4656039 MAE Loss: 0.5302572
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 91
+Starting fine-tuning on product 92
+Epoch: 1 cost time: 11.288973808288574
+Epoch: 1 | Train Loss: 0.5516371 Vali Loss: 0.7555995 Test Loss: 0.6595900 MAE Loss: 0.6058773
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.360877275466919
+Epoch: 2 | Train Loss: 0.5010867 Vali Loss: 0.7550089 Test Loss: 0.6589043 MAE Loss: 0.6048124
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 92
+Starting fine-tuning on product 93
+Epoch: 1 cost time: 11.349201202392578
+Epoch: 1 | Train Loss: 0.2257769 Vali Loss: 2.2153679 Test Loss: 1.0559567 MAE Loss: 0.6589812
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.293797969818115
+Epoch: 2 | Train Loss: 0.2123080 Vali Loss: 2.2222777 Test Loss: 1.0578178 MAE Loss: 0.6650096
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 93
+Starting fine-tuning on product 94
+Epoch: 1 cost time: 11.486521244049072
+Epoch: 1 | Train Loss: 0.4903962 Vali Loss: 1.3435166 Test Loss: 0.6484703 MAE Loss: 0.6202503
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.40494966506958
+Epoch: 2 | Train Loss: 0.3919897 Vali Loss: 1.3416999 Test Loss: 0.6478153 MAE Loss: 0.6204933
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 94
+Starting fine-tuning on product 95
+Epoch: 1 cost time: 11.377202033996582
+Epoch: 1 | Train Loss: 0.4851953 Vali Loss: 0.8238768 Test Loss: 1.5068848 MAE Loss: 0.8308933
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.20384168624878
+Epoch: 2 | Train Loss: 0.5279627 Vali Loss: 0.8242077 Test Loss: 1.5097134 MAE Loss: 0.8321413
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 95
+Starting fine-tuning on product 96
+Epoch: 1 cost time: 11.58817744255066
+Epoch: 1 | Train Loss: 0.5378095 Vali Loss: 0.5962146 Test Loss: 2.4524271 MAE Loss: 1.1036509
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.453831672668457
+Epoch: 2 | Train Loss: 0.6629929 Vali Loss: 0.5946159 Test Loss: 2.4522110 MAE Loss: 1.1018500
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 96
+Starting fine-tuning on product 97
+Epoch: 1 cost time: 11.39992380142212
+Epoch: 1 | Train Loss: 0.6674844 Vali Loss: 1.2035497 Test Loss: 1.4913560 MAE Loss: 0.8113477
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.496692180633545
+Epoch: 2 | Train Loss: 0.5811276 Vali Loss: 1.2014450 Test Loss: 1.4877328 MAE Loss: 0.8110452
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 97
+Starting fine-tuning on product 98
+Epoch: 1 cost time: 11.445428371429443
+Epoch: 1 | Train Loss: 0.5545603 Vali Loss: 0.7034869 Test Loss: 1.5013683 MAE Loss: 0.9160119
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.404801845550537
+Epoch: 2 | Train Loss: 0.6230866 Vali Loss: 0.7026940 Test Loss: 1.5036414 MAE Loss: 0.9165908
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 98
+Starting fine-tuning on product 99
+Epoch: 1 cost time: 11.366073369979858
+Epoch: 1 | Train Loss: 0.7295113 Vali Loss: 0.5589309 Test Loss: 1.1201936 MAE Loss: 0.8347639
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.304765701293945
+Epoch: 2 | Train Loss: 0.6760779 Vali Loss: 0.5585139 Test Loss: 1.1202126 MAE Loss: 0.8344915
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 99
+Starting fine-tuning on product 100
+Epoch: 1 cost time: 11.513620376586914
+Epoch: 1 | Train Loss: 0.5880055 Vali Loss: 0.4551695 Test Loss: 1.6913419 MAE Loss: 0.8910767
+lr = 0.0000004000
+Updating learning rate to 3.9999999999999956e-07
+Epoch: 2 cost time: 11.497891187667847
+Epoch: 2 | Train Loss: 0.5111576 Vali Loss: 0.4518836 Test Loss: 1.6916235 MAE Loss: 0.8866670
+Updating learning rate to 1.9999999999999978e-07
+FineTuning is done for product 100
+FineTune up to 125 products is done

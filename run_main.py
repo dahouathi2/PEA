@@ -134,6 +134,12 @@ for ii in range(args.itr):
     else:
         model = TimeLLM.Model(args).float()
 
+    #path = 'checkpoints/long_term_forecast_Pretrain_TimeLLM_pretrain_ftMS_sl45_ll7_pl7_dm32_nh8_el2_dl1_df128_fc3_ebtimeF_Exp_0-TimeLLM-Pretrain-45-others/checkpoint'
+
+    # Load the checkpoint
+    #model = TimeLLM.Model(args).float()
+    #model.load_state_dict(torch.load(path), strict=False)
+
     path = os.path.join(args.checkpoints,
                         setting + '-' + args.model_comment)  # unique checkpoint saving path
     args.content = load_content(args)
@@ -209,13 +215,13 @@ for ii in range(args.itr):
                     outputs = model(batch_x, batch_x_mark, dec_inp, batch_y_mark)[0]
                 else:
                     outputs = model(batch_x, batch_x_mark, dec_inp, batch_y_mark)
-
+                
                 f_dim = -1 if args.features == 'MS' else 0
                 outputs = outputs[:, -args.pred_len:, f_dim:]
                 batch_y = batch_y[:, -args.pred_len:, f_dim:]
                 loss = criterion(outputs, batch_y)
                 train_loss.append(loss.item())
-
+            if iter_count<3 : print("Model output shape: ", outputs.shape)
             if (i + 1) % 100 == 0:
                 accelerator.print(
                     "\titers: {0}, epoch: {1} | loss: {2:.7f}".format(i + 1, epoch + 1, loss.item()))

@@ -229,14 +229,14 @@ class Model(nn.Module):
 
             prompt.append(prompt_)
 
-        x_enc = x_enc.reshape(B, N, T).permute(0, 2, 1).contiguous()
+        x_enc = x_enc.reshape(B, N, T).permute(0, 2, 1).contiguous() # B, T, N
 
         prompt = self.tokenizer(prompt, return_tensors="pt", padding=True, truncation=True, max_length=2048).input_ids
         prompt_embeddings = self.llm_model.get_input_embeddings()(prompt.to(x_enc.device))  # (batch, prompt_token, dim)
 
         source_embeddings = self.mapping_layer(self.word_embeddings.permute(1, 0)).permute(1, 0)
 
-        x_enc = x_enc.permute(0, 2, 1).contiguous()
+        x_enc = x_enc.permute(0, 2, 1).contiguous() # B N T
         enc_out, n_vars = self.patch_embedding(x_enc.to(torch.bfloat16))
         enc_out = self.reprogramming_layer(enc_out, source_embeddings, source_embeddings)
         llama_enc_out = torch.cat([prompt_embeddings, enc_out], dim=1)

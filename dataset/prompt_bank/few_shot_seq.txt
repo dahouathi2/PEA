@@ -1,0 +1,1 @@
+Store Sales - Time Series Forecasting Of the client Boots. the Products are from loreal, this time sereas contains one prodcut sales with promotional inputs.
