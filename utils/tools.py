@@ -222,6 +222,42 @@ def test(args, accelerator, model, train_loader, vali_loader, criterion):
     model.train()
     return loss
 
+def test_MS(args, accelerator, model, train_loader, vali_loader, criterion):
+    x, _ = train_loader.dataset.last_insample_window()
+    y = vali_loader.dataset.timeseries
+    x = torch.tensor(x, dtype=torch.float32).to(accelerator.device)
+    print("Shape of X eval", x.shape)
+    model.eval()
+    with torch.no_grad():
+        B, _, C = x.shape
+        dec_inp = torch.zeros((B, args.pred_len, C)).float().to(accelerator.device)
+        dec_inp = torch.cat([x[:, -args.label_len:, :], dec_inp], dim=1)
+        outputs = torch.zeros((B, args.pred_len, C)).float().to(accelerator.device)
+        id_list = np.arange(0, B, args.eval_batch_size)
+        id_list = np.append(id_list, B)
+        for i in range(len(id_list) - 1):
+            outputs[id_list[i]:id_list[i + 1], :, :] = model(
+                x[id_list[i]:id_list[i + 1]],
+                None,
+                dec_inp[id_list[i]:id_list[i + 1]],
+                None
+            )
+        accelerator.wait_for_everyone()
+        outputs = accelerator.gather_for_metrics(outputs)
+        print("Shape of output eval before choosing", outputs.shape)
+        f_dim = -1 if args.features == 'MS' else 0
+        outputs = outputs[:, -args.pred_len:, f_dim:]
+        pred = outputs
+        true = torch.from_numpy(np.array(y)).to(accelerator.device)
+        print("Shape of y eval", true.shape)
+        batch_y_mark = torch.ones(true.shape).to(accelerator.device)
+        true = accelerator.gather_for_metrics(true)
+        batch_y_mark = accelerator.gather_for_metrics(batch_y_mark)
+
+        loss = criterion(None, 0, pred, true, batch_y_mark)
+
+    model.train()
+    return loss
 
 def load_content(args):
     if 'ETT' in args.data:

@@ -9,6 +9,108 @@ import warnings
 
 warnings.filterwarnings('ignore')
 
+
+class Dataset_Promo_ean_global_channel(Dataset):
+    def __init__(self, root_path, flag='train', size=None,
+                 features='S', data_path='ETTh1.csv',
+                 target='sold_units', scale=False, inverse=False, timeenc=0, freq='15min',
+                 seasonal_patterns='Yearly'):
+        self.features = features
+        self.target = target
+        self.scale = scale
+        self.inverse = inverse
+        self.timeenc = timeenc
+        self.root_path = root_path
+
+        self.seq_len = size[0]
+        self.label_len = size[1]
+        self.pred_len = size[2]
+
+        self.seasonal_patterns = seasonal_patterns
+        self.history_size = 1.5
+        self.window_sampling_limit = int(self.history_size * self.pred_len)
+        self.flag = flag
+        self.root_path = root_path
+        self.data_path = data_path
+        self.__read_data__()
+
+    def preprocess_pipeline(self, data, id = 'ean_global_channel'):
+        """This function is responsible for all the preprocessing """
+        data = data.rename(columns={'end_date':'date', id:'id'})
+        data = data.drop(['is_promo', 'sub_axis', 'year', 'month', 'week'], axis=1)
+        cols = list(data.columns)
+        cols.remove(self.target)
+        cols.remove('date')
+        data= data[cols + [self.target]] # organize data to date, variables and last is target we're not using date now
+        return data
+
+    def __read_data__(self):
+        # M4Dataset.initialize()
+        if self.flag == 'train':
+            dataset = pd.read_csv(os.path.join(self.root_path,
+                                          self.data_path)) 
+        else:
+            dataset = pd.read_csv(os.path.join(self.root_path,
+                                          self.data_path.replace('train', 'test')))
+        # Preprocessing dataset:
+        df = self.preprocess_pipeline(dataset)
+        self.ids = df['id'].unique()[:100]
+        self.timeseries = [df[df['id']==self.ids[i]].drop('id', axis=1).values for i in range(len(self.ids))]
+        self.n_var = self.timeseries[0].shape[1]
+    def __getitem__(self, index):
+        insample = np.zeros((self.seq_len, self.n_var))
+        insample_mask = np.zeros((self.seq_len, self.n_var))
+        outsample = np.zeros((self.pred_len + self.label_len, self.n_var))
+        outsample_mask = np.zeros((self.pred_len + self.label_len, self.n_var))  # m4 dataset
+
+        sampled_timeseries = self.timeseries[index]
+        # cut_point = np.random.randint(low=max(1, len(sampled_timeseries) - self.window_sampling_limit),
+        #                               high=len(sampled_timeseries),
+        #                               size=1)[0]
+        if self.flag=='X':
+            cut_point = np.random.randint(low=self.seq_len,
+                                      high=len(sampled_timeseries)-self.pred_len+1,
+                                      size=1)[0]
+        else:
+            cut_point = np.random.randint(low=max(1, len(sampled_timeseries)- self.window_sampling_limit),
+                                      high=len(sampled_timeseries),
+                                      size=1)[0]
+            # if self.flag =='train':
+            #     print(cut_point)
+        # cut_point = np.random.randint(low=self.seq_len,
+        #                               high=len(sampled_timeseries),
+        #                               size=1)[0]
+        insample_window = sampled_timeseries[max(0, cut_point - self.seq_len):cut_point]
+        insample[-len(insample_window):] = insample_window
+        insample_mask[-len(insample_window):] = 1.0
+        outsample_window = sampled_timeseries[
+                           cut_point - self.label_len:min(len(sampled_timeseries), cut_point + self.pred_len)]
+        outsample[:len(outsample_window)] = outsample_window
+        outsample_mask[:len(outsample_window)] = 1.0
+        return insample, outsample, insample_mask, outsample_mask
+
+    def __len__(self):
+        return len(self.timeseries)
+
+    def inverse_transform(self, data):
+        return self.scaler.inverse_transform(data)
+
+    def last_insample_window(self):
+        """
+        The last window of insample size of all timeseries.
+        This function does not support batching and does not reshuffle timeseries.
+
+        :return: Last insample window of all timeseries. Shape "timeseries, insample size"
+        """
+        insample = np.zeros((len(self.timeseries), self.seq_len, self.n_var))
+        insample_mask = np.zeros((len(self.timeseries), self.seq_len, self.n_var))
+        for i, ts in enumerate(self.timeseries):
+            ts_last_window = ts[-self.seq_len:]
+            insample[i, -len(ts):] = ts_last_window
+            insample_mask[i, -len(ts):] = 1.0
+        return insample, insample_mask
+
+
 class Dataset_MS(Dataset):
     def __init__(self, root_path='dataset', flag='train', size=None,
                  features='MS', data_path='ETTh1.csv',

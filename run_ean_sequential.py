@@ -21,7 +21,7 @@ import os
 os.environ['CURL_CA_BUNDLE'] = ''
 os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:64"
 
-from utils.tools import del_files, EarlyStopping, adjust_learning_rate, load_content, test
+from utils.tools import del_files, EarlyStopping, adjust_learning_rate, load_content, test_MS
 
 parser = argparse.ArgumentParser(description='Time-LLM')
 
@@ -79,7 +79,7 @@ parser.add_argument('--embed', type=str, default='timeF',
 parser.add_argument('--activation', type=str, default='gelu', help='activation')
 parser.add_argument('--output_attention', action='store_true', help='whether to output attention in ecoder')
 parser.add_argument('--patch_len', type=int, default=16, help='patch length')
-parser.add_argument('--stride', type=int, default=8, help='stride')
+parser.add_argument('--stride', type=int, default=1, help='stride')
 parser.add_argument('--prompt_domain', type=int, default=0, help='')
 parser.add_argument('--llm_model', type=str, default='LLAMA', help='LLM model') # LLAMA, GPT2, BERT
 parser.add_argument('--llm_dim', type=int, default='4096', help='LLM model dimension')# LLama7b:4096; GPT2-small:768; BERT-base:768
@@ -89,8 +89,8 @@ parser.add_argument('--num_workers', type=int, default=10, help='data loader num
 parser.add_argument('--itr', type=int, default=1, help='experiments times')
 parser.add_argument('--train_epochs', type=int, default=10, help='train epochs')
 parser.add_argument('--align_epochs', type=int, default=10, help='alignment epochs')
-parser.add_argument('--batch_size', type=int, default=32, help='batch size of train input data')
-parser.add_argument('--eval_batch_size', type=int, default=8, help='batch size of model evaluation')
+parser.add_argument('--batch_size', type=int, default=1, help='batch size of train input data')
+parser.add_argument('--eval_batch_size', type=int, default=1, help='batch size of model evaluation')
 parser.add_argument('--patience', type=int, default=20, help='early stopping patience')
 parser.add_argument('--learning_rate', type=float, default=0.0001, help='optimizer learning rate')
 parser.add_argument('--des', type=str, default='test', help='exp description')
@@ -105,7 +105,9 @@ args = parser.parse_args()
 ddp_kwargs = DistributedDataParallelKwargs(find_unused_parameters=True)
 deepspeed_plugin = DeepSpeedPlugin(hf_ds_config='./ds_config_zero2.json')
 accelerator = Accelerator(kwargs_handlers=[ddp_kwargs], deepspeed_plugin=deepspeed_plugin)
-
+if args.data == 'promo_ean_channel':
+    args.seq_len = int(1.75 * args.pred_len)
+    args.label_len = args.pred_len
 for ii in range(args.itr):
     # setting record of experiments
     setting = '{}_{}_{}_{}_ft{}_sl{}_ll{}_pl{}_dm{}_nh{}_el{}_dl{}_df{}_fc{}_eb{}_{}_{}'.format(
@@ -126,14 +128,9 @@ for ii in range(args.itr):
         args.embed,
         args.des, ii)
 
-    if args.data == 'm4':
-        args.pred_len = M4Meta.horizons_map[args.seasonal_patterns]  # Up to M4 config
-        args.seq_len = 2 * args.pred_len
-        args.label_len = args.pred_len
-        args.frequency_map = M4Meta.frequency_map[args.seasonal_patterns]
-    train_data, train_loader = data_provider(args, 'train')
-    vali_data, vali_loader = data_provider(args, 'val')
-    test_data, test_loader = data_provider(args, 'test')
+    
+
+    
 
     if args.model == 'Autoformer':
         model = Autoformer.Model(args).float()
@@ -149,11 +146,15 @@ for ii in range(args.itr):
         os.makedirs(path)
 
     time_now = time.time()
-
-    train_steps = len(train_loader)
+    
     early_stopping = EarlyStopping(accelerator=accelerator, patience=args.patience, verbose=True)
 
     model_optim = optim.Adam(model.parameters(), lr=args.learning_rate)
+    train_data, train_loader = data_provider(args, 'train')
+    
+    vali_data, vali_loader = data_provider(args, 'val')
+    test_data, test_loader = data_provider(args, 'test')
+    train_steps = len(train_loader)
 
     if args.lradj == 'COS':
         scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(model_optim, T_max=20, eta_min=1e-8)
@@ -165,11 +166,15 @@ for ii in range(args.itr):
                                             max_lr=args.learning_rate)
 
     criterion = smape_loss()
-
-    train_loader, vali_loader, model, model_optim, scheduler = accelerator.prepare(
-        train_loader, vali_loader, model, model_optim, scheduler)
+    
+    vali_loader, model, model_optim, scheduler = accelerator.prepare(
+            vali_loader, model, model_optim, scheduler)
 
     for epoch in range(args.train_epochs):
+        train_data, train_loader = data_provider(args, 'train')
+        train_steps = len(train_loader)
+        train_loader = accelerator.prepare(train_loader)
+        
         iter_count = 0
         train_loss = []
 
@@ -196,7 +201,7 @@ for ii in range(args.itr):
             batch_y = batch_y[:, -args.pred_len:, f_dim:]
 
             batch_y_mark = batch_y_mark[:, -args.pred_len:, f_dim:]
-            loss = criterion(batch_x, args.frequency_map, outputs, batch_y, batch_y_mark)
+            loss = criterion(batch_x, 0, outputs, batch_y, batch_y_mark) # 0 cuz we don't need it
 
             train_loss.append(loss.item())
 
@@ -219,7 +224,8 @@ for ii in range(args.itr):
 
         accelerator.print("Epoch: {} cost time: {}".format(epoch + 1, time.time() - epoch_time))
         train_loss = np.average(train_loss)
-        vali_loss = test(args, accelerator, model, train_loader, vali_loader, criterion)
+        print('########################################################################')
+        vali_loss = test_MS(args, accelerator, model, train_loader, vali_loader, criterion)
         test_loss = vali_loss
         accelerator.print(
             "Epoch: {0}, Steps: {1} | Train Loss: {2:.7f} Vali Loss: {3:.7f} Test Loss: {4:.7f}".format(
@@ -244,7 +250,7 @@ for ii in range(args.itr):
     x, _ = train_loader.dataset.last_insample_window()
     y = test_loader.dataset.timeseries
     x = torch.tensor(x, dtype=torch.float32).to(accelerator.device)
-    x = x.unsqueeze(-1)
+    print('########################################################################')
 
     model.eval()
 
@@ -273,7 +279,7 @@ for ii in range(args.itr):
 
     accelerator.print('test shape:', preds.shape)
 
-    folder_path = './m4_results/' + args.model + '-' + args.model_comment + '/'
+    folder_path = './results/' + args.model + '-' + args.model_comment + '/'
     if not os.path.exists(folder_path) and accelerator.is_local_main_process:
         os.makedirs(folder_path)
 
@@ -282,7 +288,7 @@ for ii in range(args.itr):
         forecasts_df.index = test_loader.dataset.ids[:preds.shape[0]]
         forecasts_df.index.name = 'id'
         forecasts_df.set_index(forecasts_df.columns[0], inplace=True)
-        forecasts_df.to_csv(folder_path + args.seasonal_patterns + '_forecast.csv')
+        forecasts_df.to_csv(folder_path + args.model_id + '_forecast.csv')
 
         # calculate metrics
         accelerator.print(args.model)

@@ -1,4 +1,4 @@
-from data_provider.data_loader import Dataset_MS, Dataset_Pretrain, Dataset_few_shot_seq, Dataset_ean, Dataset_ETT_hour, Dataset_ETT_minute, Dataset_Custom, Dataset_M4
+from data_provider.data_loader import Dataset_Promo_ean_global_channel, Dataset_MS, Dataset_Pretrain, Dataset_few_shot_seq, Dataset_ean, Dataset_ETT_hour, Dataset_ETT_minute, Dataset_Custom, Dataset_M4
 from torch.utils.data import DataLoader
 
 data_dict = {
@@ -14,6 +14,7 @@ data_dict = {
     'few_shot_seq': Dataset_few_shot_seq,
     'exchange' : Dataset_Custom,
     'pretrain': Dataset_MS,
+    'promo_ean_channel':Dataset_Promo_ean_global_channel,
     #'pretrain' :Dataset_Pretrain,
 
 }
@@ -36,6 +37,7 @@ def data_provider(args, flag):
         freq = args.freq
 
     if args.data == 'm4':
+        
         drop_last = False
         data_set = Data(
             root_path=args.root_path,
@@ -48,7 +50,17 @@ def data_provider(args, flag):
             freq=freq,
             seasonal_patterns=args.seasonal_patterns
         )
-        
+    elif args.data=='promo_ean_channel':
+        shuffle_flag = False
+        drop_last = False
+        data_set = Data(
+            root_path=args.root_path,
+            data_path=args.data_path,
+            flag=flag,
+            size=[args.seq_len, args.label_len, args.pred_len],
+            features=args.features,
+            target=args.target,
+        )
     else:
         data_set = Data(
             root_path=args.root_path,

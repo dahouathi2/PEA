@@ -12,7 +12,7 @@ num_process=8
 
 comment='TimeLLM-M4'
 
-accelerate launch --multi_gpu --mixed_precision bf16 --num_processes $num_process --main_process_port $master_port run_m4.py \
+accelerate launch --mixed_precision bf16 --num_processes $num_process --main_process_port $master_port run_m4.py \
   --task_name short_term_forecast \
   --is_training 1 \
   --root_path ./dataset/m4 \
