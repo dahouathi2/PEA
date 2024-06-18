@@ -10,12 +10,16 @@ d_model=32
 d_ff=128
 
 comment='EAN_Channel'
-
+# for interpolation use --interpolation for PU use --interpolation_method for fill_discontinuity use --fill_discontinuity 
+#for keep_non promo use --keep_non_promo 
 accelerate launch --mixed_precision bf16 --num_processes $num_process --main_process_port $master_port run_ean_sequential_vertex.py \
   --task_name short_term_forecast \
   --is_training 1 \
-  --root_path ./dataset/true_promo \
-  --data_path train.csv \
+  --zero_percent 10 \
+  --month 12 \
+  --num_weeks 50 \
+  --month 10 \
+  --channel Offline\
   --model_id promo_ean_channel \
   --model $model_name \
   --data promo_ean_channel \

@@ -25,6 +25,7 @@ os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:64"
 from utils.tools import del_files, EarlyStopping, adjust_learning_rate, load_content, test_MS
 
 from data_provider.ean_global_channel import import_true_promo, import_all
+from google.cloud import bigquery
 
 
 
@@ -64,9 +65,9 @@ parser.add_argument('--checkpoints', type=str, default='./checkpoints/', help='l
 # data preparation
 
 parser.add_argument('--zero_percent', type=float, required=True, help='Percentage of sales values that are zero')
-parser.add_argument('--month', type=str, required=True, help='Month to do the split train/test')
+parser.add_argument('--month', type=int, required=True, help='Month to do the split train/test')
 parser.add_argument('--num_weeks', type=int, required=True, help="Minimum number of weeks; must be > 3 * prediction_length")
-parser.add_argument('--channel', type=str, choices=[None, 'offline', 'online'], default=None, help="Channel: Both, offline, online")
+parser.add_argument('--channel', type=str, choices=[None, 'Offline', 'Online'], default=None, help="Channel: Both, offline, online")
 parser.add_argument('--fill_discontinuity', action='store_true', help='Add the product that has discontinuity in values and interpolate them')
 parser.add_argument('--keep_non_promo', action='store_true', help='Keep the products that have no promotions during the whole period')
 parser.add_argument('--interpolation', action='store_true', help='Use Full data for long term forecasting')
@@ -185,11 +186,9 @@ os.makedirs(base_dir, exist_ok=True)
 train_path = os.path.join(base_dir, "train.csv")
 test_path = os.path.join(base_dir, "test.csv")
 
-# Placeholder for saving data
-with open(train_path, 'w') as train_file:
-    train_file.write(train_set)
-with open(test_path, 'w') as test_file:
-    test_file.write(test_set)
+
+train_set.to_csv(train_path, index=False)
+test_set.to_csv(test_path, index=False)
 
 print(f"Train set saved to: {train_path}")
 print(f"Test set saved to: {test_path}")
@@ -202,12 +201,6 @@ args.root_path = base_dir
 args.data_path = 'train.csv'
 ##############################################################################################
 
-
-
-
-if args.data == 'promo_ean_channel':
-    args.seq_len = int(1.75 * args.pred_len)
-    args.label_len = args.pred_len
 for ii in range(args.itr):
     # setting record of experiments
     setting = '{}_{}_{}_{}_ft{}_sl{}_ll{}_pl{}_dm{}_nh{}_el{}_dl{}_df{}_fc{}_eb{}_{}_{}'.format(
