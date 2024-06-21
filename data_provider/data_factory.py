@@ -60,6 +60,10 @@ def data_provider(args, flag):
             size=[args.seq_len, args.label_len, args.pred_len],
             features=args.features,
             target=args.target,
+            scale=args.scale,
+            scale_path=args.scale_path,
+            embedding=args.embedding,
+            embedding_dimension=args.embedding_dimension
         )
     else:
         data_set = Data(

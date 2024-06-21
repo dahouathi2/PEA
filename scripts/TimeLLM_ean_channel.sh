@@ -1,6 +1,6 @@
 model_name=TimeLLM
-train_epochs=2
-learning_rate=0.001
+train_epochs=1
+learning_rate=0.01
 llama_layers=32
 
 master_port=00098
@@ -16,10 +16,11 @@ accelerate launch --mixed_precision bf16 --num_processes $num_process --main_pro
   --task_name short_term_forecast \
   --is_training 1 \
   --zero_percent 10 \
-  --month 12 \
-  --num_weeks 50 \
-  --month 10 \
+  --month 11 \
+  --num_weeks 52 \
   --channel Offline\
+  --scale \
+  --embedding \
   --model_id promo_ean_channel \
   --model $model_name \
   --data promo_ean_channel \

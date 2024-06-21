@@ -5,6 +5,7 @@ from torch.utils.data import Dataset
 from sklearn.preprocessing import StandardScaler
 from utils.timefeatures import time_features
 from data_provider.m4 import M4Dataset, M4Meta
+from data_provider.ean_global_channel import check_saved_standardization_data, generate_standardization_dicts, save_standardization_data, load_standardization_data
 import warnings
 
 warnings.filterwarnings('ignore')
@@ -14,18 +15,22 @@ class Dataset_Promo_ean_global_channel(Dataset):
     def __init__(self, root_path, flag='train', size=None,
                  features='S', data_path='ETTh1.csv',
                  target='sold_units', scale=False, inverse=False, timeenc=0, freq='15min',
-                 seasonal_patterns='Yearly'):
+                 seasonal_patterns='Yearly', scale_path=None, embedding=True, embedding_dimension = 2):
         self.features = features
         self.target = target
         self.scale = scale
+        self.scale_path = scale_path
         self.inverse = inverse
         self.timeenc = timeenc
         self.root_path = root_path
 
+        self.embedding_dict = {}
+
         self.seq_len = size[0]
         self.label_len = size[1]
         self.pred_len = size[2]
-
+        self.embedding_dim = embedding_dimension
+        self.embedding = embedding
         self.seasonal_patterns = seasonal_patterns
         self.history_size = 1.5
         self.window_sampling_limit = int(self.history_size * self.pred_len)
@@ -34,18 +39,63 @@ class Dataset_Promo_ean_global_channel(Dataset):
         self.data_path = data_path
         self.__read_data__()
 
-    def preprocess_pipeline(self, data, id = 'ean_global_channel'):
+    def generate_combinations(self, n):
+        """Generates all unique combinations of binary values for n binary columns"""
+        return [[(i >> j) & 1 for j in range(n)] for i in range(2**n)]
+
+    def preprocess_pipeline(self, data, id='ean_global_channel'):
         """This function is responsible for all the preprocessing """
-        data = data.rename(columns={'end_date':'date', id:'id'})
+        data = data.rename(columns={'end_date': 'date', id: 'id'})
         data = data.drop(['is_promo', 'sub_axis', 'year', 'month', 'week'], axis=1)
         cols = list(data.columns)
         cols.remove(self.target)
         cols.remove('date')
-        data= data[cols + [self.target]] # organize data to date, variables and last is target we're not using date now
-        return data
+        data = data[cols + [self.target]]  # organize data to date, variables and last is target we're not using date now
+
+        binary_columns = [col for col in data.columns if col not in ['price_range', 'seasonality_index', 'id', self.target]]
+
+        unique_combinations = self.generate_combinations(len(binary_columns))
+        self.embedding_dict = {tuple(comb): np.random.rand(self.embedding_dim) for comb in unique_combinations}  # Embedding of specified dimensions
+
+        def get_embedding(row):
+            comb = tuple(row[binary_columns])
+            return self.embedding_dict[comb]
+        if self.embedding:
+            embeddings = data[binary_columns].apply(get_embedding, axis=1)
+            embedding_df = pd.DataFrame(embeddings.tolist(), columns=['embedding_1', 'embedding_2'])
+            data = pd.concat([data, embedding_df], axis=1)
+            data = data.drop(columns=binary_columns)
+        if self.scale:
+            columns_to_standarize = ['price_range', 'sold_units', 'seasonality_index']
+            if not check_saved_standardization_data(self.scale_path):
+                mean_dict, std_dict, ids = generate_standardization_dicts(data)
+                save_standardization_data(mean_dict, std_dict, ids, self.scale_path)
+                print(f"standarization dictionaries are created in{self.scale_path}")
+            print(f"scaling the data of {self.flag}")
+            mean_dict, std_dict, ids = load_standardization_data(self.scale_path)
+            standardized_data = pd.DataFrame()
+            for id_value, group in data.groupby('id'):
+                if id_value in mean_dict:
+                    means = pd.Series(mean_dict[id_value])
+                    stds = pd.Series(std_dict[id_value])
+                    standardized_group = group.copy()
+                    for col in columns_to_standarize:
+                        if col in means and col in stds:
+                            # Standardize each column in the group using the training set stats
+                            standardized_group[col] = (group[col] - means[col]) / stds[col]
+                        else:
+                            print(f"No training data statistics for column: {col} in id: {id_value}. Skipping standardization for this column.")
+                    standardized_group['id'] = id_value  # Add id column back
+                    standardized_data = pd.concat([standardized_data, standardized_group])
+                else:
+                    print(f"No training data statistics for id: {id_value}. Skipping standardization for this id.")
+            print(f"standarization is over of {self.flag}")
+        else:
+            standardized_data = data.copy()
+
+        return standardized_data
 
     def __read_data__(self):
-        # M4Dataset.initialize()
         if self.flag == 'train':
             dataset = pd.read_csv(os.path.join(self.root_path,
                                           self.data_path)) 

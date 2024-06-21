@@ -4,7 +4,8 @@ from sklearn.preprocessing import LabelEncoder
 from xgboost import XGBClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, roc_auc_score
-
+import os
+import pickle
 
 
 ####################################################################################################################
@@ -777,10 +778,73 @@ def import_all(client, zero_percent, month,num_weeks, channel=None, fill_discont
     return final_data, train_set, test_set, max_date_first_row
 
 
+def generate_standardization_dicts(data, id_col='ean_global_channel', target_col='sales'):
+    """
+    Generate dictionaries with means and standard deviations for each id in the data.
+    """
+    data = data.rename(columns={id_col: 'id'})
+    mean_dict = {}
+    std_dict = {}
+
+    for id_value, group in data.groupby('id'):
+        means = group.mean()
+        stds = group.std()
+        mean_dict[id_value] = means.to_dict()
+        std_dict[id_value] = stds.to_dict()
+    
+    ids = list(mean_dict.keys())
+    
+    return mean_dict, std_dict, ids
 
 
+def check_saved_standardization_data(path):
+    """
+    Check if the saved mean_dict, std_dict, and ids files exist in the given path.
+    Returns True if all files exist, False otherwise.
+    """
+    mean_dict_path = os.path.join(path, 'mean_dict.pkl')
+    std_dict_path = os.path.join(path, 'std_dict.pkl')
+    ids_path = os.path.join(path, 'ids.pkl')
+
+    return os.path.exists(mean_dict_path) and os.path.exists(std_dict_path) and os.path.exists(ids_path)
+
+def save_standardization_data(mean_dict, std_dict, ids, path):
+    if not os.path.exists(path):
+        os.makedirs(path)
+    with open(f'{path}/mean_dict.pkl', 'wb') as f:
+        pickle.dump(mean_dict, f)
+    with open(f'{path}/std_dict.pkl', 'wb') as f:
+        pickle.dump(std_dict, f)
+    with open(f'{path}/ids.pkl', 'wb') as f:
+        pickle.dump(ids, f)
+
+def load_standardization_data(path):
+    with open(f'{path}/mean_dict.pkl', 'rb') as f:
+        mean_dict = pickle.load(f)
+    with open(f'{path}/std_dict.pkl', 'rb') as f:
+        std_dict = pickle.load(f)
+    with open(f'{path}/ids.pkl', 'rb') as f:
+        ids = pickle.load(f)
+    return mean_dict, std_dict, ids
 
 
+def delete_saved_standardization_data(path):
+    """
+    Delete the saved mean_dict, std_dict, and ids files if they exist in the given path.
+    """
+    mean_dict_path = os.path.join(path, 'mean_dict.pkl')
+    std_dict_path = os.path.join(path, 'std_dict.pkl')
+    ids_path = os.path.join(path, 'ids.pkl')
+
+    if os.path.exists(mean_dict_path):
+        os.remove(mean_dict_path)
+        print(f"Deleted {mean_dict_path}")
+    if os.path.exists(std_dict_path):
+        os.remove(std_dict_path)
+        print(f"Deleted {std_dict_path}")
+    if os.path.exists(ids_path):
+        os.remove(ids_path)
+        print(f"Deleted {ids_path}")
 
 
 

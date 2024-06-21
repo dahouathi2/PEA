@@ -249,6 +249,7 @@ def test_MS(args, accelerator, model, train_loader, vali_loader, criterion):
         outputs = outputs[:, -args.pred_len:, f_dim:]
         pred = outputs
         true = torch.from_numpy(np.array(y)).to(accelerator.device)
+        true = true[:, -args.pred_len:, f_dim:]
         print("Shape of y eval", true.shape)
         batch_y_mark = torch.ones(true.shape).to(accelerator.device)
         true = accelerator.gather_for_metrics(true)

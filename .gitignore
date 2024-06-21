@@ -1,1 +1,4 @@
-./checkpoints
+checkpoints/
+results/
+scale_path/
+

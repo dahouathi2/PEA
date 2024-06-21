@@ -13,7 +13,7 @@ from data_provider.data_factory import data_provider
 import time
 import random
 import numpy as np
-import pandas
+import pandas as pd
 
 from utils.losses import smape_loss
 from utils.m4_summary import M4Summary
@@ -24,8 +24,17 @@ os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:64"
 
 from utils.tools import del_files, EarlyStopping, adjust_learning_rate, load_content, test_MS
 
-from data_provider.ean_global_channel import import_true_promo, import_all
+from data_provider.ean_global_channel import import_true_promo, import_all, check_saved_standardization_data, delete_saved_standardization_data
 from google.cloud import bigquery
+
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+
+def mean_absolute_percentage_error(y_true, y_pred):
+    return np.mean(np.abs((y_true - y_pred) / y_true)) * 100
+
+def symmetric_mean_absolute_percentage_error(y_true, y_pred):
+    return np.mean(2.0 * np.abs(y_true - y_pred) / (np.abs(y_true) + np.abs(y_pred))) * 100
+
 
 
 
@@ -72,7 +81,10 @@ parser.add_argument('--fill_discontinuity', action='store_true', help='Add the p
 parser.add_argument('--keep_non_promo', action='store_true', help='Keep the products that have no promotions during the whole period')
 parser.add_argument('--interpolation', action='store_true', help='Use Full data for long term forecasting')
 parser.add_argument('--interpolation_method', action='store_true', help='True then we use PU method for interpolation')
-
+parser.add_argument('--scale', action='store_true', help='True then we scale')
+parser.add_argument('--scale_path', type=str, default='', help=" scale path")
+parser.add_argument('--embedding', action='store_true', help='Do the embedding')
+parser.add_argument('--embedding_dimension', type=int,default=2, help='dimension of static embedding')
 # forecasting task
 parser.add_argument('--seq_len', type=int, default=96, help='input sequence length')
 parser.add_argument('--label_len', type=int, default=48, help='start token length')
@@ -167,7 +179,23 @@ else :
 
 
 ################## 
-
+setting = '{}_{}_{}_{}_ft{}_sl{}_ll{}_pl{}_dm{}_nh{}_el{}_dl{}_df{}_fc{}_eb{}_{}'.format(
+        args.task_name,
+        args.model_id,
+        args.model,
+        args.data,
+        args.features,
+        args.seq_len,
+        args.label_len,
+        args.pred_len,
+        args.d_model,
+        args.n_heads,
+        args.e_layers,
+        args.d_layers,
+        args.d_ff,
+        args.factor,
+        args.embed,
+        args.des)
 # Construct the path
 base_dir = f"dataset/"
 if args.interpolation:
@@ -180,7 +208,11 @@ if args.fill_discontinuity:
     base_dir += "_filldiscont"
 if args.keep_non_promo:
     base_dir += "_keepnonpromo"
-
+if args.scale:
+    base_dir+="_scaled"
+if args.embedding:
+    base_dir+=f"_embedding_{args.embedding_dimension}"
+base_dir += '/'+setting
 os.makedirs(base_dir, exist_ok=True)
 
 train_path = os.path.join(base_dir, "train.csv")
@@ -192,6 +224,12 @@ test_set.to_csv(test_path, index=False)
 
 print(f"Train set saved to: {train_path}")
 print(f"Test set saved to: {test_path}")
+if args.scale:
+     
+    args.scale_path = 'scale_path/' + base_dir[8:]
+    if check_saved_standardization_data(args.scale_path):
+        delete_saved_standardization_data(path)
+
 
 ########################################################### configuration ####################
 args.pred_len = pred_len
@@ -233,7 +271,7 @@ for ii in range(args.itr):
         model = TimeLLM.Model(args).float()
 
     path = os.path.join(args.checkpoints,
-                        base_dir[8:] + setting + '-' + args.model_comment)  # unique checkpoint saving path
+                        base_dir[8:] + '_' + str(ii) + '-' + args.model_comment)  # unique checkpoint saving path
     args.content = load_content(args)
     if not os.path.exists(path) and accelerator.is_local_main_process:
         os.makedirs(path)
@@ -261,65 +299,104 @@ for ii in range(args.itr):
     x = torch.tensor(x, dtype=torch.float32).to(accelerator.device)
     print('########################################################################')
 
-#     model.eval()
+    model.eval()
 
-#     with torch.no_grad():
-#         B, _, C = x.shape
-#         dec_inp = torch.zeros((B, args.pred_len, C)).float().to(accelerator.device)
-#         dec_inp = torch.cat([x[:, -args.label_len:, :], dec_inp], dim=1)
-#         outputs = torch.zeros((B, args.pred_len, C)).float().to(accelerator.device)
-#         id_list = np.arange(0, B, args.eval_batch_size)
-#         id_list = np.append(id_list, B)
-#         for i in range(len(id_list) - 1):
-#             outputs[id_list[i]:id_list[i + 1], :, :] = model(
-#                 x[id_list[i]:id_list[i + 1]],
-#                 None,
-#                 dec_inp[id_list[i]:id_list[i + 1]],
-#                 None
-#             )
-#         accelerator.wait_for_everyone()
-#         f_dim = -1 if args.features == 'MS' else 0
-#         outputs = outputs[:, -args.pred_len:, f_dim:]
-#         outputs = outputs.detach().cpu().numpy()
+    with torch.no_grad():
+        B, _, C = x.shape
+        dec_inp = torch.zeros((B, args.pred_len, C)).float().to(accelerator.device)
+        dec_inp = torch.cat([x[:, -args.label_len:, :], dec_inp], dim=1)
+        outputs = torch.zeros((B, args.pred_len, C)).float().to(accelerator.device)
+        id_list = np.arange(0, B, args.eval_batch_size)
+        id_list = np.append(id_list, B)
+        for i in range(len(id_list) - 1):
+            outputs[id_list[i]:id_list[i + 1], :, :] = model(
+                x[id_list[i]:id_list[i + 1]],
+                None,
+                dec_inp[id_list[i]:id_list[i + 1]],
+                None
+            )
+        accelerator.wait_for_everyone()
+        f_dim = -1 if args.features == 'MS' else 0
+        outputs = outputs[:, -args.pred_len:, f_dim:]
+        outputs = outputs.detach().cpu().numpy()
 
-#         preds = outputs
-#         trues = y
-#         x = x.detach().cpu().numpy()
+        preds = outputs
+        trues = np.array(y)[:, -args.pred_len:, f_dim:]
+        x = x.detach().cpu().numpy()
+    
+    accelerator.wait_for_everyone()
+    accelerator.print('test shape:', preds.shape, trues.shape)
 
-#     accelerator.print('test shape:', preds.shape)
+    folder_path = './results/' + args.model +  base_dir[8:] + args.model_comment + '/'
+    if not os.path.exists(folder_path) and accelerator.is_local_main_process:
+        os.makedirs(folder_path)
 
-#     folder_path = './results/' + args.model + '-' + args.model_comment + '/'
-#     if not os.path.exists(folder_path) and accelerator.is_local_main_process:
-#         os.makedirs(folder_path)
+    if accelerator.is_local_main_process:
+        ids = test_loader.dataset.ids[:preds.shape[0]]
+        forecasts_df = pd.DataFrame(preds[:, :, 0], columns=[f'V{i + 1}' for i in range(args.pred_len)])
+        forecasts_df.insert(0, 'id', ids)
+        forecasts_df.to_csv(folder_path + args.model_id + '_forecast.csv', index=False)
 
-#     if accelerator.is_local_main_process:
-#         forecasts_df = pandas.DataFrame(preds[:, :, 0], columns=[f'V{i + 1}' for i in range(args.pred_len)])
-#         forecasts_df.index = test_loader.dataset.ids[:preds.shape[0]]
-#         forecasts_df.index.name = 'id'
-#         forecasts_df.set_index(forecasts_df.columns[0], inplace=True)
-#         forecasts_df.to_csv(folder_path + args.model_id + '_forecast.csv')
 
-#         # calculate metrics
-#         accelerator.print(args.model)
-#         file_path = folder_path
-#         if 'Weekly_forecast.csv' in os.listdir(file_path) \
-#                 and 'Monthly_forecast.csv' in os.listdir(file_path) \
-#                 and 'Yearly_forecast.csv' in os.listdir(file_path) \
-#                 and 'Daily_forecast.csv' in os.listdir(file_path) \
-#                 and 'Hourly_forecast.csv' in os.listdir(file_path) \
-#                 and 'Quarterly_forecast.csv' in os.listdir(file_path):
-#             m4_summary = M4Summary(file_path, args.root_path)
-#             # m4_forecast.set_index(m4_winner_forecast.columns[0], inplace=True)
-#             smape_results, owa_results, mape, mase = m4_summary.evaluate()
-#             accelerator.print('smape:', smape_results)
-#             accelerator.print('mape:', mape)
-#             accelerator.print('mase:', mase)
-#             accelerator.print('owa:', owa_results)
-#         else:
-#             accelerator.print('After all 6 tasks are finished, you can calculate the averaged performance')
 
-# accelerator.wait_for_everyone()
-# if accelerator.is_local_main_process:
-#     path = './checkpoints'  # unique checkpoint saving path
-#     del_files(path)  # delete checkpoint files
-#     accelerator.print('success delete checkpoints')
+
+        # Calculate metrics
+        mse_list = []
+        rmse_list = []
+        mae_list = []
+        mape_list = []
+        smape_list = []
+        r2_list = []
+        
+        for i in range(preds.shape[0]):
+            true_values = trues[i].reshape(-1)
+            pred_values = preds[i].reshape(-1)
+            
+            mse = mean_squared_error(true_values, pred_values)
+            rmse = np.sqrt(mse)
+            mae = mean_absolute_error(true_values, pred_values)
+            # Ensure y_true does not contain zeros to avoid division by zero
+            mape = mean_absolute_percentage_error(true_values + np.finfo(float).eps, pred_values)
+            smape = symmetric_mean_absolute_percentage_error(true_values + np.finfo(float).eps, pred_values)
+            r2 = r2_score(true_values, pred_values)
+            
+            mse_list.append(mse)
+            rmse_list.append(rmse)
+            mae_list.append(mae)
+            mape_list.append(mape)
+            smape_list.append(smape)
+            r2_list.append(r2)
+        
+        metrics_df = pd.DataFrame({
+            'id': ids,
+            'MSE': mse_list,
+            'RMSE': rmse_list,
+            'MAE': mae_list,
+            'MAPE': mape_list,
+            'sMAPE': smape_list,
+            'R2': r2_list
+        })
+        
+        metrics_df.to_csv(folder_path + args.model_id + '_metrics.csv', index=False)
+    #         # calculate metrics
+    #         accelerator.print(args.model)
+    #         file_path = folder_path
+    #         if 'Weekly_forecast.csv' in os.listdir(file_path) \
+    #                 and 'Monthly_forecast.csv' in os.listdir(file_path) \
+    #                 and 'Yearly_forecast.csv' in os.listdir(file_path) \
+    #                 and 'Daily_forecast.csv' in os.listdir(file_path) \
+    #                 and 'Hourly_forecast.csv' in os.listdir(file_path) \
+    #                 and 'Quarterly_forecast.csv' in os.listdir(file_path):
+    #             m4_summary = M4Summary(file_path, args.root_path)
+    #             # m4_forecast.set_index(m4_winner_forecast.columns[0], inplace=True)
+    #             smape_results, owa_results, mape, mase = m4_summary.evaluate()
+    #             accelerator.print('smape:', smape_results)
+    #             accelerator.print('mape:', mape)
+    #             accelerator.print('mase:', mase)
+    #             accelerator.print('owa:', owa_results)
+    #         else:
+    #             accelerator.print('After all 6 tasks are finished, you can calculate the averaged performance')
+
+    path = './checkpoints'  # unique checkpoint saving path
+    del_files(path)  # delete checkpoint files
+    accelerator.print('success delete checkpoints')
