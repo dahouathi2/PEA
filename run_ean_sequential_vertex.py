@@ -168,8 +168,7 @@ _,_,_,pred_len = import_true_promo(
     )
 print("Ended up with ", 3*pred_len)
 args.num_weeks=3*pred_len
-
-Print("Let's Load the Data")
+print("Let's Load the Data")
 if args.interpolation:
     final_data, train_set, test_set, pred_len = import_all(
         client=bq_client,
