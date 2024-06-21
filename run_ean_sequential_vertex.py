@@ -250,7 +250,6 @@ args.pred_len = pred_len
 args.label_len = args.pred_len
 args.seq_len = int(2*args.pred_len)
 args.root_path = base_dir
-arg.num_weeks = 3*args.pred_len
 args.data_path = 'train.csv'
 ##############################################################################################
 
