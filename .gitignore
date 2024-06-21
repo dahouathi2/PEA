@@ -1,4 +1,47 @@
-checkpoints/
+# Ignore Python bytecode
+__pycache__/
+*.pyc
+
+# Ignore data directories
+data_provider_pretrain/
+dataset/
+Logfiles/
 results/
-scale_path/
+resultsss/
+checkpoints/
+# Ignore notebooks
+*.ipynb
+
+# Ignore specific file types
+*.csv
+*.npz
+*.txt
+*.png
+*.jpg
+*.jpeg
+*.log
+
+# Ignore figures directory
+figures/
+
+
+
+
+
+# Ignore SDK files
+sdk2_bigframes.ipynb
+
+# Ignore vertex files
+vertex.ipynb
+vertex_training.ipynb
+
+# Ignore environment files
+.env
+*.env
+
+# Ignore Python virtual environments
+venv/
+.venv/
+ENV/
+env/
 
