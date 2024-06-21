@@ -51,7 +51,6 @@ def data_provider(args, flag):
             seasonal_patterns=args.seasonal_patterns
         )
     elif args.data=='promo_ean_channel':
-        shuffle_flag = False
         drop_last = False
         data_set = Data(
             root_path=args.root_path,

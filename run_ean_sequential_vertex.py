@@ -75,7 +75,7 @@ parser.add_argument('--checkpoints', type=str, default='./checkpoints/', help='l
 
 parser.add_argument('--zero_percent', type=float, required=True, help='Percentage of sales values that are zero')
 parser.add_argument('--month', type=int, required=True, help='Month to do the split train/test')
-parser.add_argument('--num_weeks', type=int, required=True, help="Minimum number of weeks; must be > 3 * prediction_length")
+parser.add_argument('--num_weeks', type=int, help="Minimum number of weeks; must be > 3 * prediction_length")
 parser.add_argument('--channel', type=str, choices=[None, 'Offline', 'Online'], default=None, help="Channel: Both, offline, online")
 parser.add_argument('--fill_discontinuity', action='store_true', help='Add the product that has discontinuity in values and interpolate them')
 parser.add_argument('--keep_non_promo', action='store_true', help='Keep the products that have no promotions during the whole period')
@@ -85,6 +85,8 @@ parser.add_argument('--scale', action='store_true', help='True then we scale')
 parser.add_argument('--scale_path', type=str, default='', help=" scale path")
 parser.add_argument('--embedding', action='store_true', help='Do the embedding')
 parser.add_argument('--embedding_dimension', type=int,default=2, help='dimension of static embedding')
+
+
 # forecasting task
 parser.add_argument('--seq_len', type=int, default=96, help='input sequence length')
 parser.add_argument('--label_len', type=int, default=48, help='start token length')
@@ -154,7 +156,20 @@ bq_client = bigquery.Client(
 )
 
 #################################################################################################
+print("Looking for number of weeks to take")
+_,_,_,pred_len = import_true_promo(
+        client=bq_client,
+        zero_percent=0,
+        month=args.month,
+        num_weeks=0,
+        channel=args.channel,
+        fill_discontinuity=args.fill_discontinuity,
+        keep_non_promo=args.keep_non_promo
+    )
+print("Ended up with ", 3*pred_len)
+args.num_weeks=3*pred_len
 
+Print("Let's Load the Data")
 if args.interpolation:
     final_data, train_set, test_set, pred_len = import_all(
         client=bq_client,
@@ -236,6 +251,7 @@ args.pred_len = pred_len
 args.label_len = args.pred_len
 args.seq_len = int(2*args.pred_len)
 args.root_path = base_dir
+arg.num_weeks = 3*args.pred_len
 args.data_path = 'train.csv'
 ##############################################################################################
 
@@ -336,8 +352,6 @@ for ii in range(args.itr):
         forecasts_df = pd.DataFrame(preds[:, :, 0], columns=[f'V{i + 1}' for i in range(args.pred_len)])
         forecasts_df.insert(0, 'id', ids)
         forecasts_df.to_csv(folder_path + args.model_id + '_forecast.csv', index=False)
-
-
 
 
         # Calculate metrics

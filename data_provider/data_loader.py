@@ -7,7 +7,7 @@ from utils.timefeatures import time_features
 from data_provider.m4 import M4Dataset, M4Meta
 from data_provider.ean_global_channel import check_saved_standardization_data, generate_standardization_dicts, save_standardization_data, load_standardization_data
 import warnings
-
+import hashlib
 warnings.filterwarnings('ignore')
 
 
@@ -42,6 +42,13 @@ class Dataset_Promo_ean_global_channel(Dataset):
     def generate_combinations(self, n):
         """Generates all unique combinations of binary values for n binary columns"""
         return [[(i >> j) & 1 for j in range(n)] for i in range(2**n)]
+    def deterministic_embedding(self, comb):
+        """Generates a deterministic embedding based on a hash of the combination"""
+        hash_object = hashlib.sha256(str(comb).encode())
+        hash_digest = hash_object.digest()
+        seed = int.from_bytes(hash_digest[:4], 'little')
+        rng = np.random.default_rng(seed)
+        return rng.random(self.embedding_dim)
 
     def preprocess_pipeline(self, data, id='ean_global_channel'):
         """This function is responsible for all the preprocessing """
@@ -55,8 +62,8 @@ class Dataset_Promo_ean_global_channel(Dataset):
         binary_columns = [col for col in data.columns if col not in ['price_range', 'seasonality_index', 'id', self.target]]
 
         unique_combinations = self.generate_combinations(len(binary_columns))
-        self.embedding_dict = {tuple(comb): np.random.rand(self.embedding_dim) for comb in unique_combinations}  # Embedding of specified dimensions
-
+        self.embedding_dict = {tuple(comb): self.deterministic_embedding(comb) for comb in unique_combinations}
+        
         def get_embedding(row):
             comb = tuple(row[binary_columns])
             return self.embedding_dict[comb]
@@ -104,7 +111,7 @@ class Dataset_Promo_ean_global_channel(Dataset):
                                           self.data_path.replace('train', 'test')))
         # Preprocessing dataset:
         df = self.preprocess_pipeline(dataset)
-        self.ids = df['id'].unique()[:100]
+        self.ids = df['id'].unique()#[:100]
         self.timeseries = [df[df['id']==self.ids[i]].drop('id', axis=1).values for i in range(len(self.ids))]
         self.n_var = self.timeseries[0].shape[1]
     def __getitem__(self, index):

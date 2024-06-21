@@ -13,6 +13,7 @@ checkpoints/
 dataset/m4
 dataset/*.csv
 dataset/true_promo
+scale_path/
 # Ignore notebooks
 *.ipynb
 

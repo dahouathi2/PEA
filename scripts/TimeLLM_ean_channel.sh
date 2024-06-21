@@ -1,12 +1,12 @@
 model_name=TimeLLM
 train_epochs=1
 learning_rate=0.01
-llama_layers=32
+llama_layers=16
 
 master_port=00098
 num_process=1
 batch_size=1
-d_model=32
+d_model=16
 d_ff=128
 
 comment='EAN_Channel'
@@ -17,7 +17,6 @@ accelerate launch --mixed_precision bf16 --num_processes $num_process --main_pro
   --is_training 1 \
   --zero_percent 10 \
   --month 11 \
-  --num_weeks 52 \
   --channel Offline\
   --scale \
   --embedding \
@@ -27,7 +26,6 @@ accelerate launch --mixed_precision bf16 --num_processes $num_process --main_pro
   --features MS \
   --target sold_units \
   --patch_len 1 \
-  --pred_len 17 \
   --factor 3 \
   --enc_in 9 \
   --dec_in 9 \
