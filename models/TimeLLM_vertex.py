@@ -276,7 +276,7 @@ class Model(nn.Module,VertexModel):
         return dec_out
 
     @vertexai.preview.developer.mark.train()
-    def train_model(self, path):
+    def train_model(self, train_loader, test_loader, vali_loader, path):
         # import torch.multiprocessing as mp
         # mp.set_start_method('spawn', force=True)
         ddp_kwargs = DistributedDataParallelKwargs(find_unused_parameters=True)
@@ -284,10 +284,10 @@ class Model(nn.Module,VertexModel):
         accelerator = Accelerator(kwargs_handlers=[ddp_kwargs], deepspeed_plugin=deepspeed_plugin)
         print("Accelerator initialized:", accelerator)
 
-        ## Load datasets 
-        train_data, train_loader = data_provider(self.args, 'train')
-        vali_data, vali_loader = data_provider(self.args, 'val')
-        test_data, test_loader = data_provider(self.args, 'test')
+        # ## Load datasets 
+        # train_data, train_loader = data_provider(self.args, 'train')
+        # vali_data, vali_loader = data_provider(self.args, 'val')
+        # test_data, test_loader = data_provider(self.args, 'test')
 
 
         
@@ -312,12 +312,12 @@ class Model(nn.Module,VertexModel):
                                                 max_lr=self.args.learning_rate)
     
 
-        vali_loader, self, model_optim, scheduler = accelerator.prepare(
+        train_loader, vali_loader, self, model_optim, scheduler = accelerator.prepare(train_loader,
                 vali_loader, self, model_optim, scheduler)       
 
         for epoch in range(self.args.train_epochs):
-            train_data, train_loader = data_provider(self.args, 'train')
-            train_loader = accelerator.prepare(train_loader)
+            # train_data, train_loader = data_provider(self.args, 'train')
+            # train_loader = accelerator.prepare(train_loader)
             
             iter_count = 0
             train_loss = []

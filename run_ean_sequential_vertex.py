@@ -242,7 +242,7 @@ if args.scale:
      
     args.scale_path = 'scale_path/' + base_dir[8:]
     if check_saved_standardization_data(args.scale_path):
-        delete_saved_standardization_data(path)
+        delete_saved_standardization_data(args.scale_path)
 
 
 ########################################################### configuration ####################
@@ -291,17 +291,18 @@ for ii in range(args.itr):
         os.makedirs(path)
 
 
+    train_data, train_loader = data_provider(args, 'train')
+    test_data, test_loader = data_provider(args, 'test')
 
     vertexai.preview.init(remote=False)
     model.train_model.vertex.remote_config.container_uri = "europe-west1-docker.pkg.dev/itg-bpma-gbl-ww-np/yb-vertext-training-rep/yb-vertext-training:latest"
     model.train_model.vertex.remote_config.enable_cuda = True
     model.train_model.vertex.remote_config.accelerator_count = 4
-    model.train_model(path)
+    model.train_model(train_loader, test_loader, test_loader,path)
     torch.save(model.state_dict(), path + '/' + 'checkpoint_v_test1')
 
     
-    train_data, train_loader = data_provider(args, 'train')
-    test_data, test_loader = data_provider(args, 'test')
+    
 
 #     best_model_path = path + '/' + 'checkpoint'
 #     torch.cuda.synchronize()

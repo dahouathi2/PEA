@@ -789,6 +789,8 @@ def generate_standardization_dicts(data, id_col='ean_global_channel', target_col
     for id_value, group in data.groupby('id'):
         means = group.mean()
         stds = group.std()
+        # Replace zero standard deviations with one
+        stds = stds.replace(0, 1)
         mean_dict[id_value] = means.to_dict()
         std_dict[id_value] = stds.to_dict()
     
