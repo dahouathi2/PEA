@@ -9,6 +9,9 @@ Logfiles/
 results/
 resultsss/
 checkpoints/
+dataset/m4
+dataset/*.csv
+dataset/true_promo
 # Ignore notebooks
 *.ipynb
 
