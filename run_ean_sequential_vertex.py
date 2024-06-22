@@ -102,7 +102,7 @@ parser.add_argument('--n_heads', type=int, default=8, help='num of heads')
 parser.add_argument('--e_layers', type=int, default=2, help='num of encoder layers')
 parser.add_argument('--d_layers', type=int, default=1, help='num of decoder layers')
 parser.add_argument('--d_ff', type=int, default=32, help='dimension of fcn')
-parser.add_argument('--moving_avg', type=int, default=25, help='window size of moving average')
+parser.add_argument('--moving_avg', type=int, default=3, help='window size of moving average')
 parser.add_argument('--factor', type=int, default=1, help='attn factor')
 parser.add_argument('--dropout', type=float, default=0.1, help='dropout')
 parser.add_argument('--embed', type=str, default='timeF',
@@ -166,8 +166,8 @@ _,_,_,pred_len = import_true_promo(
         fill_discontinuity=args.fill_discontinuity,
         keep_non_promo=args.keep_non_promo
     )
-print("Ended up with ", 3*pred_len)
-args.num_weeks=3*pred_len
+print("Ended up with ", 4*pred_len)
+args.num_weeks=4*pred_len
 print("Let's Load the Data")
 if args.interpolation:
     final_data, train_set, test_set, pred_len = import_all(

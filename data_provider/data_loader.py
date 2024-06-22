@@ -32,7 +32,7 @@ class Dataset_Promo_ean_global_channel(Dataset):
         self.embedding_dim = embedding_dimension
         self.embedding = embedding
         self.seasonal_patterns = seasonal_patterns
-        self.history_size = 1.5
+        self.history_size = 2
         self.window_sampling_limit = int(self.history_size * self.pred_len)
         self.flag = flag
         self.root_path = root_path
@@ -124,7 +124,7 @@ class Dataset_Promo_ean_global_channel(Dataset):
         # cut_point = np.random.randint(low=max(1, len(sampled_timeseries) - self.window_sampling_limit),
         #                               high=len(sampled_timeseries),
         #                               size=1)[0]
-        if self.flag=='X':
+        if self.flag=='train':
             cut_point = np.random.randint(low=self.seq_len,
                                       high=len(sampled_timeseries)-self.pred_len+1,
                                       size=1)[0]

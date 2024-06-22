@@ -1,11 +1,11 @@
 model_name=TimeLLM
-train_epochs=1
-learning_rate=0.01
+train_epochs=20
+learning_rate=0.1
 llama_layers=16
 
 master_port=00098
 num_process=1
-batch_size=1
+batch_size=5
 d_model=16
 d_ff=128
 
@@ -15,10 +15,10 @@ comment='EAN_Channel'
 accelerate launch --mixed_precision bf16 --num_processes $num_process --main_process_port $master_port run_ean_sequential_vertex.py \
   --task_name short_term_forecast \
   --is_training 1 \
-  --zero_percent 10 \
-  --month 11 \
-  --channel Offline\
-  --scale \
+  --zero_percent 0 \
+  --month 6 \
+  --channel Offline \
+  --interpolation \
   --embedding \
   --model_id promo_ean_channel \
   --model $model_name \
@@ -27,9 +27,9 @@ accelerate launch --mixed_precision bf16 --num_processes $num_process --main_pro
   --target sold_units \
   --patch_len 1 \
   --factor 3 \
-  --enc_in 9 \
-  --dec_in 9 \
-  --c_out 9 \
+  --enc_in 7 \
+  --dec_in 7 \
+  --c_out 7 \
   --des 'Exp' \
   --itr 1 \
   --d_model $d_model \
