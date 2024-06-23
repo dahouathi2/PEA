@@ -99,9 +99,11 @@ class Dataset_Promo_ean_global_channel(Dataset):
             print(f"standarization is over of {self.flag}")
         else:
             standardized_data = data.copy()
-
+        cols = list(standardized_data.columns)
+        cols.remove(self.target)
+        standardized_data = standardized_data[cols + [self.target]]
         return standardized_data
-
+        
     def __read_data__(self):
         if self.flag == 'train':
             dataset = pd.read_csv(os.path.join(self.root_path,

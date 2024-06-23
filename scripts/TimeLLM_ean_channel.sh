@@ -1,13 +1,13 @@
 model_name=TimeLLM
-train_epochs=20
-learning_rate=0.1
+train_epochs=50
+learning_rate=0.001
 llama_layers=16
 
 master_port=00098
 num_process=1
 batch_size=5
 d_model=16
-d_ff=128
+d_ff=64
 
 comment='EAN_Channel'
 # for interpolation use --interpolation for PU use --interpolation_method for fill_discontinuity use --fill_discontinuity 
@@ -16,16 +16,18 @@ accelerate launch --mixed_precision bf16 --num_processes $num_process --main_pro
   --task_name short_term_forecast \
   --is_training 1 \
   --zero_percent 0 \
-  --month 6 \
-  --channel Offline \
+  --month 5 \
+  --channel None \
   --interpolation \
+  --fill_discontinuity \
+  --scale \
   --embedding \
   --model_id promo_ean_channel \
   --model $model_name \
   --data promo_ean_channel \
   --features MS \
   --target sold_units \
-  --patch_len 1 \
+  --patch_len 8 \
   --factor 3 \
   --enc_in 7 \
   --dec_in 7 \

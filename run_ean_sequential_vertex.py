@@ -168,6 +168,8 @@ _,_,_,pred_len = import_true_promo(
     )
 print("Ended up with ", 4*pred_len)
 args.num_weeks=4*pred_len
+args.pred_len = pred_len
+args.label_len = pred_len
 print("Let's Load the Data")
 if args.interpolation:
     final_data, train_set, test_set, pred_len = import_all(
