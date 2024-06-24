@@ -296,8 +296,8 @@ for ii in range(args.itr):
     train_data, train_loader = data_provider(args, 'train')
     test_data, test_loader = data_provider(args, 'test')
 
-    vertexai.preview.init(remote=False)
-    model.train_model.vertex.remote_config.container_uri = "europe-west1-docker.pkg.dev/itg-bpma-gbl-ww-np/yb-vertext-training-rep/yb-vertext-training:latest"
+    vertexai.preview.init(remote=True)
+    model.train_model.vertex.remote_config.container_uri = "europe-west1-docker.pkg.dev/itg-bpma-gbl-ww-np/timeseriesforecasting/torch-train:latest"
     model.train_model.vertex.remote_config.enable_cuda = True
     model.train_model.vertex.remote_config.accelerator_count = 4
     model.train_model(train_loader, test_loader, test_loader,path)
