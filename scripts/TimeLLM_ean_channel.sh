@@ -7,7 +7,7 @@ master_port=00098
 num_process=1
 batch_size=5
 d_model=16
-d_ff=32
+d_ff=32 
 
 comment='EAN_Channel'
 # for interpolation use --interpolation for PU use --interpolation_method for fill_discontinuity use --fill_discontinuity 
@@ -20,6 +20,7 @@ accelerate launch --mixed_precision bf16 --num_processes $num_process --main_pro
   --interpolation \
   --fill_discontinuity \
   --scale \
+  --channel 'Offline' \
   --embedding \
   --model_id promo_ean_channel \
   --model $model_name \
@@ -41,14 +42,14 @@ accelerate launch --mixed_precision bf16 --num_processes $num_process --main_pro
   --train_epochs $train_epochs \
   --model_comment $comment \
   --llm_model GPT2 \
-  --llm_dim 768 
+  --llm_dim 768  
 
 
 accelerate launch --mixed_precision bf16 --num_processes $num_process --main_process_port $master_port run_ean_sequential_vertex.py \
   --task_name short_term_forecast \
   --is_training 1 \
   --zero_percent 0 \
-  --month 4 \
+  --month 5 \
   --interpolation \
   --fill_discontinuity \
   --scale \
@@ -74,7 +75,6 @@ accelerate launch --mixed_precision bf16 --num_processes $num_process --main_pro
   --model_comment $comment \
   --llm_model GPT2 \
   --llm_dim 768 
-
 accelerate launch --mixed_precision bf16 --num_processes $num_process --main_process_port $master_port run_ean_sequential_vertex.py \
   --task_name short_term_forecast \
   --is_training 1 \

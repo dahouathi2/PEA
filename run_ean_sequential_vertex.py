@@ -301,7 +301,7 @@ for ii in range(args.itr):
     model.train_model.vertex.remote_config.enable_cuda = True
     model.train_model.vertex.remote_config.accelerator_count = 4
     model.train_model(train_loader, test_loader, test_loader,path)
-    torch.save(model.state_dict(), path + '/' + 'checkpoint_v_test1')
+    torch.save(model.state_dict(), path + '/' + 'checkpoint')
 
     
     

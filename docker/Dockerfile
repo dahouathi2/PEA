@@ -23,11 +23,8 @@ RUN pip install --no-cache-dir -r requirement.txt
 RUN pip install torch==2.2.2 torchvision==0.17.2 torchaudio==2.2.2 --index-url https://download.pytorch.org/whl/cu118
  
 # Copy the rest of the application code
-COPY data_provider /PEA/
-COPY dataset /PEA/
-COPY models /PEA/
-COPY layers /PEA/
-COPY utils /PEA/
+COPY . /PEA/
+
  
 # Set environment variable for CUDA
 ENV CUDA_LAUNCH_BLOCKING=1

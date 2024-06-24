@@ -302,21 +302,19 @@ def import_true_promo(client, zero_percent, month, num_weeks,channel=None, fill_
                 td.end_date;"""
         return a
 
-    data =client.query_and_wait(query(zero_percent, keep_non_promo)).to_dataframe()
-    print("number of products before preprocessing", data["ean"].unique().shape[0])
-    # Step 1: Count unique end dates for each EAN and each global channel type
-    unique_dates = data.groupby(['ean', 'global_channel_type'])['end_date'].nunique().reset_index()
-
-    # Step 2: Filter to find EANs where each global channel type has more than 65 unique dates
-    eans_77_dates = unique_dates[unique_dates['end_date'] >= num_weeks]
-    valid_eans = eans_77_dates.groupby('ean').filter(lambda x: len(x) == data["global_channel_type"].unique().shape[0] and all(x['end_date'] >= num_weeks))
-
-    # Step 3: Filter the original DataFrame to include only these EANs
-    data = data[data['ean'].isin(valid_eans['ean'])]
-    data["sold_units"] = data["sold_units"].astype(float)
-    data = data.sort_values(by=["end_date", "global_channel_type", "ean"])
-
     data['ean_global_channel'] = data['ean'] + '_' + data['global_channel_type']
+    print("number of products before preprocessing", data["ean_global_channel"].unique().shape[0])
+
+
+    # Step 1: Count unique end dates for each ean_global_channel
+    unique_dates = data.groupby('ean_global_channel')['end_date'].nunique().reset_index()
+
+    # Step 2: Filter to find ean_global_channels with more than or equal to num_weeks unique dates
+    valid_ean_global_channels = unique_dates[unique_dates['end_date'] >= num_weeks]['ean_global_channel']
+
+    # Step 3: Filter the original DataFrame to include only these ean_global_channels
+    data = data[data['ean_global_channel'].isin(valid_ean_global_channels)]
+
     data['sub_tactic'] = data['sub_tactic'].str.lower().str.strip()
 
     def aggregate_subtactics(series):
@@ -342,6 +340,8 @@ def import_true_promo(client, zero_percent, month, num_weeks,channel=None, fill_
 
     aggregated_data.drop_duplicates(inplace=True)
     print("How many ean_global_channel_type:", aggregated_data.ean_global_channel.unique().shape[0])
+    if aggregated_data.ean_global_channel.unique().shape[0] == 0:
+        raise ValueError("Error: No unique ean_global_channel values found.")
     one_hot_encoded_data = aggregated_data['sub_tactic'].str.get_dummies(', ')
     empty_sub_tactic_indices = aggregated_data[aggregated_data['sub_tactic'] == ''].index
     one_hot_encoded_data.loc[empty_sub_tactic_indices] = 0
@@ -579,23 +579,27 @@ def import_all(client, zero_percent, month,num_weeks, channel=None, fill_discont
         return a
 
     data =client.query_and_wait(query(zero_percent, keep_non_promo)).to_dataframe()
-    print("number of products before preprocessing", data["ean"].unique().shape[0])
-
-
-
-    # Step 1: Count unique end dates for each EAN and each global channel type
-    unique_dates = data.groupby(['ean', 'global_channel_type'])['end_date'].nunique().reset_index()
-
-    # Step 2: Filter to find EANs where each global channel type has more than 65 unique dates
-    eans_77_dates = unique_dates[unique_dates['end_date'] >= num_weeks]
-    valid_eans = eans_77_dates.groupby('ean').filter(lambda x: len(x) == data["global_channel_type"].unique().shape[0] and all(x['end_date'] >= num_weeks))
-
-    # Step 3: Filter the original DataFrame to include only these EANs
-    data = data[data['ean'].isin(valid_eans['ean'])]
-    data["sold_units"] = data["sold_units"].astype(float)
-    data = data.sort_values(by=["end_date", "global_channel_type", "ean"])
-
     data['ean_global_channel'] = data['ean'] + '_' + data['global_channel_type']
+    print("number of products before preprocessing", data["ean_global_channel"].unique().shape[0])
+
+
+
+    
+
+    # Step 1: Count unique end dates for each ean_global_channel
+    unique_dates = data.groupby('ean_global_channel')['end_date'].nunique().reset_index()
+
+    # Step 2: Filter to find ean_global_channels with more than or equal to num_weeks unique dates
+    valid_ean_global_channels = unique_dates[unique_dates['end_date'] >= num_weeks]['ean_global_channel']
+
+    # Step 3: Filter the original DataFrame to include only these ean_global_channels
+    data = data[data['ean_global_channel'].isin(valid_ean_global_channels)]
+
+    # Convert 'sold_units' to float
+    data["sold_units"] = data["sold_units"].astype(float)
+
+    # Sort the data
+    data = data.sort_values(by=["end_date", "global_channel_type", "ean"])
     data['sub_tactic'] = data['sub_tactic'].str.lower().str.strip()
 
     def aggregate_subtactics(series):
@@ -621,6 +625,8 @@ def import_all(client, zero_percent, month,num_weeks, channel=None, fill_discont
 
     aggregated_data.drop_duplicates(inplace=True)
     print("How many ean_global_channel_type:", aggregated_data.ean_global_channel.unique().shape[0])
+    if aggregated_data.ean_global_channel.unique().shape[0] == 0:
+        raise ValueError("Error: No unique ean_global_channel values found.")
     one_hot_encoded_data = aggregated_data['sub_tactic'].str.get_dummies(', ')
     empty_sub_tactic_indices = aggregated_data[aggregated_data['sub_tactic'] == ''].index
     one_hot_encoded_data.loc[empty_sub_tactic_indices] = 0
