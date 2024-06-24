@@ -277,8 +277,8 @@ class Model(nn.Module,VertexModel):
 
     @vertexai.preview.developer.mark.train()
     def train_model(self, train_loader, test_loader, vali_loader, path):
-        # import torch.multiprocessing as mp
-        # mp.set_start_method('spawn', force=True)
+        import torch.multiprocessing as mp
+        mp.set_start_method('spawn', force=True)
         ddp_kwargs = DistributedDataParallelKwargs(find_unused_parameters=True)
         deepspeed_plugin = DeepSpeedPlugin(hf_ds_config='./ds_config_zero2.json')
         accelerator = Accelerator(kwargs_handlers=[ddp_kwargs], deepspeed_plugin=deepspeed_plugin)

@@ -20,7 +20,6 @@ accelerate launch --mixed_precision bf16 --num_processes $num_process --main_pro
   --interpolation \
   --fill_discontinuity \
   --scale \
-  --channel 'Offline' \
   --embedding \
   --model_id promo_ean_channel \
   --model $model_name \
