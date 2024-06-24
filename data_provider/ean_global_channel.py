@@ -301,7 +301,7 @@ def import_true_promo(client, zero_percent, month, num_weeks,channel=None, fill_
             ORDER BY
                 td.end_date;"""
         return a
-
+    data =client.query_and_wait(query(zero_percent, keep_non_promo)).to_dataframe()
     data['ean_global_channel'] = data['ean'] + '_' + data['global_channel_type']
     print("number of products before preprocessing", data["ean_global_channel"].unique().shape[0])
 
