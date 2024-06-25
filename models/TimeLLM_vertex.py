@@ -283,7 +283,8 @@ class Model(nn.Module,VertexModel):
         deepspeed_plugin = DeepSpeedPlugin(hf_ds_config='./ds_config_zero2.json')
         accelerator = Accelerator(kwargs_handlers=[ddp_kwargs], deepspeed_plugin=deepspeed_plugin)
         print("Accelerator initialized:", accelerator)
-
+        if not os.path.exists(path):
+            os.makedirs(path)
         # ## Load datasets 
         # train_data, train_loader = data_provider(self.args, 'train')
         # vali_data, vali_loader = data_provider(self.args, 'val')
@@ -374,6 +375,7 @@ class Model(nn.Module,VertexModel):
             accelerator.print(
                 "Epoch: {0}, Steps: {1} | Train Loss: {2:.7f} Vali Loss: {3:.7f} Test Loss: {4:.7f}".format(
                     epoch + 1, train_steps, train_loss, vali_loss, test_loss))
+            
             early_stopping(vali_loss, self, path)  # model saving
             if early_stopping.early_stop:
                 accelerator.print("Early stopping")

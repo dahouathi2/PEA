@@ -4,6 +4,7 @@ from accelerate import Accelerator, DeepSpeedPlugin
 from accelerate import DistributedDataParallelKwargs
 from torch import optim
 from torch.optim import lr_scheduler
+from torch.cuda.amp import autocast
 
 from data_provider.m4 import M4Meta
 from models import Autoformer, DLinear
@@ -133,9 +134,6 @@ parser.add_argument('--llm_layers', type=int, default=6)
 parser.add_argument('--percent', type=int, default=100)
 
 args = parser.parse_args()
-ddp_kwargs = DistributedDataParallelKwargs(find_unused_parameters=True)
-deepspeed_plugin = DeepSpeedPlugin(hf_ds_config='./ds_config_zero2.json')
-accelerator = Accelerator(kwargs_handlers=[ddp_kwargs], deepspeed_plugin=deepspeed_plugin)
 
 PROJECT_ID = "itg-bpma-gbl-ww-np"  # @param {type:"string"}
 REGION = "europe-west1" 
@@ -144,17 +142,14 @@ import vertexai
 REMOTE_JOB_NAME = "timeseriesllm1"
 REMOTE_JOB_BUCKET = f"{BUCKET_URI}/{REMOTE_JOB_NAME}"
 ##################################################################################################
-vertexai.init(
-    project=PROJECT_ID,
-    location=REGION,
-    staging_bucket=REMOTE_JOB_BUCKET,
-)
+
 
 ##################################################################################################
 bq_client = bigquery.Client(
     project=PROJECT_ID,  # GCP project used for running the queries and billing
 )
 
+#################################################################################################
 #################################################################################################
 print("Looking for number of weeks to take")
 _,_,_,pred_len = import_true_promo(
@@ -166,37 +161,13 @@ _,_,_,pred_len = import_true_promo(
         fill_discontinuity=args.fill_discontinuity,
         keep_non_promo=args.keep_non_promo
     )
-print(f"{args.seq_len}")
-
 print("Ended up with ", 4*pred_len)
 args.num_weeks=4*pred_len
 args.pred_len = pred_len
 args.label_len = pred_len
-args.seq_len = 2*pred_len
-print(f"{args.seq_len}")
-print("Let's Load the Data")
-if args.interpolation:
-    final_data, train_set, test_set, pred_len = import_all(
-        client=bq_client,
-        zero_percent=args.zero_percent,
-        month=args.month,
-        num_weeks=args.num_weeks,
-        channel=args.channel,
-        fill_discontinuity=args.fill_discontinuity,
-        keep_non_promo=args.keep_non_promo,
-        interpolation_method=args.interpolation_method
-    )
-else :
-    final_data, train_set, test_set, pred_len = import_true_promo(
-        client=bq_client,
-        zero_percent=args.zero_percent,
-        month=args.month,
-        num_weeks=args.num_weeks,
-        channel=args.channel,
-        fill_discontinuity=args.fill_discontinuity,
-        keep_non_promo=args.keep_non_promo
-    )
+args.seq_len = int(2*pred_len)
 
+################## 
 setting = '{}_{}_{}_{}_ft{}_sl{}_ll{}_pl{}_dm{}_nh{}_el{}_dl{}_df{}_fc{}_eb{}_{}'.format(
         args.task_name,
         args.model_id,
@@ -214,7 +185,6 @@ setting = '{}_{}_{}_{}_ft{}_sl{}_ll{}_pl{}_dm{}_nh{}_el{}_dl{}_df{}_fc{}_eb{}_{}
         args.factor,
         args.embed,
         args.des)
-################## 
 # Construct the path
 base_dir = f"dataset/"
 if args.interpolation:
@@ -238,11 +208,12 @@ train_path = os.path.join(base_dir, "train.csv")
 test_path = os.path.join(base_dir, "test.csv")
 
 
-train_set.to_csv(train_path, index=False)
-test_set.to_csv(test_path, index=False)
+train_set = pd.read_csv(train_path)
+test_set = pd.read_csv(test_path)
 
-print(f"Train set saved to: {train_path}")
-print(f"Test set saved to: {test_path}")
+print(f"Train set Loaded from: {train_path}")
+print(f"Test set Loaded from: {test_path}")
+
 if args.scale:
      
     args.scale_path = 'scale_path/' + base_dir[8:]
@@ -252,12 +223,11 @@ if args.scale:
 
 ########################################################### configuration ####################
 args.pred_len = pred_len
-args.label_len = pred_len
-args.seq_len = int(2*pred_len)
+args.label_len = args.pred_len
+args.seq_len = int(2*args.pred_len)
 args.root_path = base_dir
 args.data_path = 'train.csv'
 ##############################################################################################
-print(f"{args.seq_len}")
 
 for ii in range(args.itr):
     # setting record of experiments
@@ -283,30 +253,122 @@ for ii in range(args.itr):
 
     
 
-    if args.model == 'Autoformer':
-        model = Autoformer.Model(args).float()
-    elif args.model == 'DLinear':
-        model = DLinear.Model(args).float()
-    else:
-        model = TimeLLM.Model(args).float()
+
 
     path = os.path.join(args.checkpoints,
                         base_dir[8:] + '_' + str(ii) + '-' + args.model_comment)  # unique checkpoint saving path
     args.content = load_content(args)
-    if not os.path.exists(path):
+    if not os.path.exists(path) and accelerator.is_local_main_process:
         os.makedirs(path)
 
+    # Initialize Accelerator and DeepSpeed plugin
+    ddp_kwargs = DistributedDataParallelKwargs(find_unused_parameters=True)
+    deepspeed_plugin = DeepSpeedPlugin(hf_ds_config='./ds_config_zero2.json')
+    accelerator = Accelerator(kwargs_handlers=[ddp_kwargs], deepspeed_plugin=deepspeed_plugin)
 
+    # Initialize the process group for distributed training if necessary
+    if accelerator.distributed_type == "MULTI_GPU":
+        dist.init_process_group(backend='nccl')
+
+    # Move model to the correct device
+    model = TimeLLM.Model(args).float().to(accelerator.device)
+
+    # Load model state
+    best_model_path = path + '/' + 'checkpoint'
+    model.load_state_dict(torch.load(best_model_path, map_location=accelerator.device), strict=False)
+
+    # Load data
     train_data, train_loader = data_provider(args, 'train')
     test_data, test_loader = data_provider(args, 'test')
 
-    vertexai.preview.init(remote=True)
-    model.train_model.vertex.remote_config.container_uri = "europe-west1-docker.pkg.dev/itg-bpma-gbl-ww-np/timeseriesforecasting/torch-train:latest"
-    model.train_model.vertex.remote_config.enable_cuda = True
-    model.train_model.vertex.remote_config.accelerator_count = 4
-    model.train_model(train_loader, test_loader, test_loader,path)
-    torch.save(model.state_dict(), path + '/' + 'checkpoint')
+    # Move training data to the correct device
+    x, _ = train_loader.dataset.last_insample_window()
+    y = test_loader.dataset.timeseries
+    x = torch.tensor(x, dtype=torch.float32).to(accelerator.device)
+    y = torch.tensor(y, dtype=torch.float32).to(accelerator.device)
 
-    path = './checkpoints'  # unique checkpoint saving path
-    #del_files(path)  # delete checkpoint files
-    accelerator.print('success delete checkpoints')
+    print('########################################################################')
+
+    model.eval()
+
+    with torch.no_grad():
+        B, _, C = x.shape
+        dec_inp = torch.zeros((B, args.pred_len, C)).float().to(accelerator.device)
+        dec_inp = torch.cat([x[:, -args.label_len:, :], dec_inp], dim=1).float().to(accelerator.device)
+        outputs = torch.zeros((B, args.pred_len, C)).float().to(accelerator.device)
+        id_list = np.arange(0, B, args.eval_batch_size)
+        id_list = np.append(id_list, B)
+        
+        with autocast():  # Use autocast for mixed precision
+            for i in range(len(id_list) - 1):
+                outputs[id_list[i]:id_list[i + 1], :, :] = model(
+                    x[id_list[i]:id_list[i + 1]],
+                    None,
+                    dec_inp[id_list[i]:id_list[i + 1]],
+                    None
+                )
+        
+        if accelerator.distributed_type == "MULTI_GPU":
+            accelerator.wait_for_everyone()
+        
+        f_dim = -1 if args.features == 'MS' else 0
+        outputs = outputs[:, -args.pred_len:, f_dim:]
+        outputs = outputs.detach().cpu().numpy()
+
+        preds = outputs
+        trues = np.array(y.cpu())[:, -args.pred_len:, f_dim:]
+        x = x.detach().cpu().numpy()
+
+    if accelerator.distributed_type == "MULTI_GPU":
+        accelerator.wait_for_everyone()
+        
+    accelerator.print('test shape:', preds.shape, trues.shape)
+
+    folder_path = './results/' + args.model + base_dir[8:] + args.model_comment + '/'
+    if not os.path.exists(folder_path) and accelerator.is_local_main_process:
+        os.makedirs(folder_path)
+
+    if accelerator.is_local_main_process:
+        ids = test_loader.dataset.ids[:preds.shape[0]]
+        forecasts_df = pd.DataFrame(preds[:, :, 0], columns=[f'V{i + 1}' for i in range(args.pred_len)])
+        forecasts_df.insert(0, 'id', ids)
+        forecasts_df.to_csv(folder_path + args.model_id + '_forecast.csv', index=False)
+
+        # Calculate metrics
+        mse_list = []
+        rmse_list = []
+        mae_list = []
+        mape_list = []
+        smape_list = []
+        r2_list = []
+        
+        for i in range(preds.shape[0]):
+            true_values = trues[i].reshape(-1)
+            pred_values = preds[i].reshape(-1)
+            
+            mse = mean_squared_error(true_values, pred_values)
+            rmse = np.sqrt(mse)
+            mae = mean_absolute_error(true_values, pred_values)
+            # Ensure y_true does not contain zeros to avoid division by zero
+            mape = mean_absolute_percentage_error(true_values + np.finfo(float).eps, pred_values)
+            smape = symmetric_mean_absolute_percentage_error(true_values + np.finfo(float).eps, pred_values)
+            r2 = r2_score(true_values, pred_values)
+            
+            mse_list.append(mse)
+            rmse_list.append(rmse)
+            mae_list.append(mae)
+            mape_list.append(mape)
+            smape_list.append(smape)
+            r2_list.append(r2)
+        
+        metrics_df = pd.DataFrame({
+            'id': ids,
+            'MSE': mse_list,
+            'RMSE': rmse_list,
+            'MAE': mae_list,
+            'MAPE': mape_list,
+            'sMAPE': smape_list,
+            'R2': r2_list
+        })
+        
+        metrics_df.to_csv(folder_path + args.model_id + '_metrics.csv', index=False)
