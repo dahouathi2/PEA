@@ -166,7 +166,7 @@ args.num_weeks=4*pred_len
 args.pred_len = pred_len
 args.label_len = pred_len
 args.seq_len = int(2*pred_len)
-
+   
 ################## 
 setting = '{}_{}_{}_{}_ft{}_sl{}_ll{}_pl{}_dm{}_nh{}_el{}_dl{}_df{}_fc{}_eb{}_{}'.format(
         args.task_name,
@@ -258,7 +258,7 @@ for ii in range(args.itr):
     path = os.path.join(args.checkpoints,
                         base_dir[8:] + '_' + str(ii) + '-' + args.model_comment)  # unique checkpoint saving path
     args.content = load_content(args)
-    if not os.path.exists(path) and accelerator.is_local_main_process:
+    if not os.path.exists(path) :
         os.makedirs(path)
 
     # Initialize Accelerator and DeepSpeed plugin
@@ -301,6 +301,7 @@ for ii in range(args.itr):
         
         with autocast():  # Use autocast for mixed precision
             for i in range(len(id_list) - 1):
+                print('i am in inference')
                 outputs[id_list[i]:id_list[i + 1], :, :] = model(
                     x[id_list[i]:id_list[i + 1]],
                     None,
@@ -327,7 +328,8 @@ for ii in range(args.itr):
     folder_path = './results/' + args.model + base_dir[8:] + args.model_comment + '/'
     if not os.path.exists(folder_path) and accelerator.is_local_main_process:
         os.makedirs(folder_path)
-
+        print("path created")
+    print(folder_path)
     if accelerator.is_local_main_process:
         ids = test_loader.dataset.ids[:preds.shape[0]]
         forecasts_df = pd.DataFrame(preds[:, :, 0], columns=[f'V{i + 1}' for i in range(args.pred_len)])

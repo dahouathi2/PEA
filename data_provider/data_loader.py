@@ -15,7 +15,7 @@ class Dataset_Promo_ean_global_channel(Dataset):
     def __init__(self, root_path, flag='train', size=None,
                  features='S', data_path='ETTh1.csv',
                  target='sold_units', scale=False, inverse=False, timeenc=0, freq='15min',
-                 seasonal_patterns='Yearly', scale_path=None, embedding=True, embedding_dimension = 2):
+                 seasonal_patterns='Yearly', scale_path=None, embedding=True, embedding_dimension = 2, ma=None, diff=None):
         self.features = features
         self.target = target
         self.scale = scale
@@ -23,7 +23,8 @@ class Dataset_Promo_ean_global_channel(Dataset):
         self.inverse = inverse
         self.timeenc = timeenc
         self.root_path = root_path
-
+        self.ma = ma
+        self.diff  = diff
         self.embedding_dict = {}
 
         self.seq_len = size[0]
@@ -38,7 +39,11 @@ class Dataset_Promo_ean_global_channel(Dataset):
         self.root_path = root_path
         self.data_path = data_path
         self.__read_data__()
-
+    def moving_average(self, series, window_size):
+        smoothed_series = series.rolling(window=window_size).mean()
+        return smoothed_series.fillna(series.mean())
+    def difference(self, series):
+        return series.diff().dropna()
     def generate_combinations(self, n):
         """Generates all unique combinations of binary values for n binary columns"""
         return [[(i >> j) & 1 for j in range(n)] for i in range(2**n)]
@@ -58,7 +63,11 @@ class Dataset_Promo_ean_global_channel(Dataset):
         cols.remove(self.target)
         cols.remove('date')
         data = data[cols + [self.target]]  # organize data to date, variables and last is target we're not using date now
-
+        if self.ma is not None:
+            data[self.target] = self.moving_average(data[self.target], self.ma)
+            data.to_csv(self.root_path + f'{self.flag}_moveingaverage.csv', index=False)
+        if self.diff is not None:
+            pass
         binary_columns = [col for col in data.columns if col not in ['price_range', 'seasonality_index', 'id', self.target]]
 
         unique_combinations = self.generate_combinations(len(binary_columns))
@@ -69,9 +78,11 @@ class Dataset_Promo_ean_global_channel(Dataset):
             return self.embedding_dict[comb]
         if self.embedding:
             embeddings = data[binary_columns].apply(get_embedding, axis=1)
-            embedding_df = pd.DataFrame(embeddings.tolist(), columns=['embedding_1', 'embedding_2'])
+            embedding_columns = [f'embedding_{i+1}' for i in range(self.embedding_dim)]
+            embedding_df = pd.DataFrame(embeddings.tolist(), columns=embedding_columns)
             data = pd.concat([data, embedding_df], axis=1)
             data = data.drop(columns=binary_columns)
+        
         if self.scale:
             columns_to_standarize = ['price_range', 'sold_units', 'seasonality_index']
             if not check_saved_standardization_data(self.scale_path):
@@ -102,6 +113,7 @@ class Dataset_Promo_ean_global_channel(Dataset):
         cols = list(standardized_data.columns)
         cols.remove(self.target)
         standardized_data = standardized_data[cols + [self.target]]
+        
         return standardized_data
         
     def __read_data__(self):
@@ -113,7 +125,7 @@ class Dataset_Promo_ean_global_channel(Dataset):
                                           self.data_path.replace('train', 'test')))
         # Preprocessing dataset:
         df = self.preprocess_pipeline(dataset)
-        self.ids = df['id'].unique()#[:100]
+        self.ids = df['id'].unique()#[:10]
         self.timeseries = [df[df['id']==self.ids[i]].drop('id', axis=1).values for i in range(len(self.ids))]
         self.n_var = self.timeseries[0].shape[1]
     def __getitem__(self, index):
@@ -127,8 +139,13 @@ class Dataset_Promo_ean_global_channel(Dataset):
         #                               high=len(sampled_timeseries),
         #                               size=1)[0]
         if self.flag=='train':
-            cut_point = np.random.randint(low=self.seq_len,
+            if self.seq_len <=len(sampled_timeseries)-self.pred_len+1:
+                cut_point = np.random.randint(low=self.seq_len,
                                       high=len(sampled_timeseries)-self.pred_len+1,
+                                      size=1)[0]
+            else:
+                cut_point = np.random.randint(low=max(1, len(sampled_timeseries)- self.window_sampling_limit),
+                                      high=len(sampled_timeseries),
                                       size=1)[0]
         else:
             cut_point = np.random.randint(low=max(1, len(sampled_timeseries)- self.window_sampling_limit),
@@ -205,7 +222,7 @@ class Dataset_MS(Dataset):
     def __read_data__(self):
         self.scaler = StandardScaler()
         df_raw = pd.read_csv(os.path.join(self.root_path,
-                                          self.data_path)).head(77)
+                                          self.data_path)).head(2000)
 
         '''
         df_raw.columns: ['date', ...(other features), target feature]

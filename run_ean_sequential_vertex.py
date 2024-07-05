@@ -85,6 +85,9 @@ parser.add_argument('--scale', action='store_true', help='True then we scale')
 parser.add_argument('--scale_path', type=str, default='', help=" scale path")
 parser.add_argument('--embedding', action='store_true', help='Do the embedding')
 parser.add_argument('--embedding_dimension', type=int,default=2, help='dimension of static embedding')
+parser.add_argument('--pretrain', action='store_true', help='True then we load the pretrained model')
+parser.add_argument('--ma', type=int, help='Month to do the split train/test')
+parser.add_argument('--sequence_n', type=int, help='Month to do the split train/test')
 
 
 # forecasting task
@@ -168,11 +171,11 @@ _,_,_,pred_len = import_true_promo(
     )
 print(f"{args.seq_len}")
 
-print("Ended up with ", 4*pred_len)
-args.num_weeks=4*pred_len
+print("Ended up with ", (2+args.sequence_n)*pred_len)
+args.num_weeks=(2+args.sequence_n)*pred_len
 args.pred_len = pred_len
 args.label_len = pred_len
-args.seq_len = 2*pred_len
+args.seq_len = args.sequence_n*pred_len
 print(f"{args.seq_len}")
 print("Let's Load the Data")
 if args.interpolation:
@@ -253,7 +256,7 @@ if args.scale:
 ########################################################### configuration ####################
 args.pred_len = pred_len
 args.label_len = pred_len
-args.seq_len = int(2*pred_len)
+args.seq_len = int(args.sequence_n*pred_len)
 args.root_path = base_dir
 args.data_path = 'train.csv'
 ##############################################################################################
@@ -280,15 +283,35 @@ for ii in range(args.itr):
         args.des, ii)
 
     
-
+    
+    
     
 
-    if args.model == 'Autoformer':
-        model = Autoformer.Model(args).float()
-    elif args.model == 'DLinear':
-        model = DLinear.Model(args).float()
-    else:
-        model = TimeLLM.Model(args).float()
+    model = TimeLLM.Model(args).float()
+
+    if args.pretrain:
+        setting = '{}_{}_{}_{}_ft{}_sl{}_ll{}_pl{}_dm{}_nh{}_el{}_dl{}_df{}_fc{}_eb{}_{}_{}'.format(
+        args.task_name,
+        'pretrain',
+        args.model,
+        'pretrain',
+        args.features,
+        args.seq_len,
+        args.label_len,
+        args.pred_len,
+        args.d_model,
+        args.n_heads,
+        args.e_layers,
+        args.d_layers,
+        args.d_ff,
+        args.factor,
+        args.embed,
+        args.des, ii)
+        pretrain_path = os.path.join(args.checkpoints,
+                        'pretrain/' + setting+'/checkpoint_pretrain')
+        if not os.path.exists(pretrain_path):
+            raise "can't find pretrained path"
+        model.load_state_dict(torch.load(pretrain_path, map_location=accelerator.device), strict=False)
 
     path = os.path.join(args.checkpoints,
                         base_dir[8:] + '_' + str(ii) + '-' + args.model_comment)  # unique checkpoint saving path
@@ -300,7 +323,7 @@ for ii in range(args.itr):
     train_data, train_loader = data_provider(args, 'train')
     test_data, test_loader = data_provider(args, 'test')
 
-    vertexai.preview.init(remote=True)
+    vertexai.preview.init(remote=False)
     model.train_model.vertex.remote_config.container_uri = "europe-west1-docker.pkg.dev/itg-bpma-gbl-ww-np/timeseriesforecasting/torch-train:latest"
     model.train_model.vertex.remote_config.enable_cuda = True
     model.train_model.vertex.remote_config.accelerator_count = 4

@@ -776,10 +776,14 @@ def import_all(client, zero_percent, month,num_weeks, channel=None, fill_discont
     #######################SPLITTING##################################################################
     final_data = result.copy()
     final_data = final_data[~final_data['ean_global_channel'].isin(filtered_channels)]
+    
 
     train_set = final_data.loc[((final_data['year'] <= 2022) | ((final_data['year'] == 2023) & (final_data['month'] <= month)))]
-    test_set = final_data.loc[((final_data['year'] == 2023) & (final_data['month'] > month)) | (final_data['year'] == 2024)]    
-
+    test_set = final_data.loc[((final_data['year'] == 2023) & (final_data['month'] > month)) | (final_data['year'] == 2024)] 
+    
+   
+    train_set.sold_units = np.log(train_set.sold_units+1)
+    test_set.sold_units = np.log(test_set.sold_units+1)
     assert max_date_first_row* 3 <num_weeks, "num weeks should be higher than 3 times prediction length"
     return final_data, train_set, test_set, max_date_first_row
 

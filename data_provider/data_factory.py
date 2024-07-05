@@ -62,7 +62,9 @@ def data_provider(args, flag):
             scale=args.scale,
             scale_path=args.scale_path,
             embedding=args.embedding,
-            embedding_dimension=args.embedding_dimension
+            embedding_dimension=args.embedding_dimension,
+            ma = args.ma,
+            diff=args.diff
         )
     else:
         data_set = Data(
