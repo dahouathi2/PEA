@@ -1,11 +1,11 @@
 model_name=TimeLLM
-train_epochs=25
+train_epochs=1
 learning_rate=0.01
 llama_layers=16
 
 master_port=00098
 num_process=1
-batch_size=5
+batch_size=1
 d_model=16
 d_ff=32 
 
@@ -45,5 +45,5 @@ accelerate launch --mixed_precision bf16 --num_processes $num_process --main_pro
   --llm_layers $llama_layers \
   --train_epochs $train_epochs \
   --model_comment $comment \
-  --llm_model BERT \
-  --llm_dim 768 
+  --llm_model GPT2 \
+  --llm_dim 1024 

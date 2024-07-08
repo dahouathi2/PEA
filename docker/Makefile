@@ -1,15 +1,6 @@
 # Makefile for Docker repository initialization, building, and deployment
-
-# Load environment variables from .env file
 include docker/.env
 export
-
-# Set default values if not defined in .env
-PROJECT_ID ?= your-project-id
-REGION ?= europe-west1
-REPO ?= your-repo-name
-TAG ?= gcr.io/$(PROJECT_ID)/your-image:latest
-TRAIN_DOCKER_URI ?= $(REGION)-docker.pkg.dev/$(PROJECT_ID)/$(REPO)/your-image:latest
 
 # Targets
 init:
