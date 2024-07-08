@@ -46,4 +46,4 @@ accelerate launch --mixed_precision bf16 --num_processes $num_process --main_pro
   --train_epochs $train_epochs \
   --model_comment $comment \
   --llm_model GPT2 \
-  --llm_dim 1024 
+  --llm_dim 1024 \
